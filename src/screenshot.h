@@ -14,18 +14,18 @@
 
 class Screenshot
 {
-public:
-    Screenshot();
-    static void newScreenshot(bool hideWindow, QWidget *parent, QPushButton *newScreenshotButton, QSpinBox *delaySpinBox);
-    static void saveScreenshot();
-    static void shootScreen();
+ public:
+  Screenshot();
+  static void newScreenshot(bool hideWindow, QWidget *parent, QPushButton *newScreenshotButton, QSpinBox *delaySpinBox);
+  static void saveScreenshot();
+  static void shootScreen();
 
-    static void updateCheckBox();
-    static void updateScreenshotLabel();
+  static void updateCheckBox();
+  static void updateScreenshotLabel();
 
-    static QPixmap originalPixmap;
+  static QPixmap originalPixmap;
 
-    static void initPixMap();
+  static void initPixMap();
 };
 
 #endif // SCREENSHOT_H
