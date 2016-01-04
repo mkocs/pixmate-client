@@ -42,7 +42,7 @@ bool RegionSelect::event(QEvent *event)
     return QDialog::event(event);
 }
 
-void RegionSelect::paintEvent(QPaintEvent *event)
+void RegionSelect::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     if(!background)
