@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->screenshotLabel->setMinimumSize(240, 160);
 
   ui->saveButton->setDisabled(true);
+  ui->screenRadioButton->setChecked(true);
 
   QMenu *screenMenu = new QMenu("Screen", this);
   QAction *newAction = new QAction("New Screenshot", this);
