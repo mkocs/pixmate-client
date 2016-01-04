@@ -1,7 +1,6 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "src/screenshot.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -41,7 +40,28 @@ void MainWindow::newScreenshot() {
   if(ui->hideCheckBox->isChecked())
     hide();
   ui->screenshotButton->setDisabled(true);
-  QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootScreen()));
+  switch(selectedMode)
+  {
+    case 0:
+    {
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootScreen()));
+      break;
+    }
+    case 1:
+    {
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootSelection()));
+      break;
+    }
+    case 2:
+    {
+      break;
+    }
+    default:
+    {
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootScreen()));
+      break;
+    }
+  }
 }
 
 void MainWindow::saveScreenshot() {
@@ -53,20 +73,35 @@ void MainWindow::saveScreenshot() {
     originalPixmap.save(fileName, format.toLatin1().constData());
 }
 
-void MainWindow::shootScreen() {
-  if(ui->delaySpinBox->value() != 0) {
-    qApp->beep();
-  }
-
-  QScreen *screen = QGuiApplication::primaryScreen();
-  if(screen)
-    originalPixmap = screen->grabWindow(0);
+void MainWindow::resetAfterShoot()
+{
   updateScreenshotLabel();
 
   ui->screenshotButton->setDisabled(false);
   ui->saveButton->setDisabled(false);
   if(ui->hideCheckBox->isChecked())
     show();
+}
+
+void MainWindow::shootScreen() {
+  /*if(ui->delaySpinBox->value() != 0) {
+    qApp->beep();
+  }*/
+  QScreen *screen = QGuiApplication::primaryScreen();
+  if(screen)
+    originalPixmap = screen->grabWindow(0);
+  resetAfterShoot();
+}
+
+void MainWindow::shootSelection()
+{
+  selector = new RegionSelect();
+  res = selector->exec();
+  if(res == QDialog::Accepted)
+    originalPixmap = selector->getSelection();
+
+  resetAfterShoot();
+  delete selector;
 }
 
 void MainWindow::updateScreenshotLabel() {
@@ -96,4 +131,23 @@ void MainWindow::on_saveButton_clicked()
 void MainWindow::on_quitButton_clicked()
 {
   close();
+}
+
+void MainWindow::on_screenRadioButton_clicked() { selectedMode = 0;}
+
+void MainWindow::on_selectionRadioButton_clicked() { selectedMode = 1; }
+
+void MainWindow::on_windowRadioButton_clicked() { selectedMode = 2; }
+
+void MainWindow::on_delaySpinBox_valueChanged(int arg1)
+{
+  if(arg1 == 0)
+  {
+    ui->hideCheckBox->setDisabled(true);
+    ui->hideCheckBox->setChecked(false);
+  }
+  else
+  {
+    ui->hideCheckBox->setDisabled(false);
+  }
 }

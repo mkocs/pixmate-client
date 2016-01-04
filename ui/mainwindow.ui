@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>361</width>
-    <height>360</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>361</width>
-    <height>360</height>
+    <height>370</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>361</width>
-    <height>360</height>
+    <height>370</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -132,6 +132,45 @@
       <string>Delay</string>
      </property>
     </widget>
+    <widget class="QRadioButton" name="screenRadioButton">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>30</y>
+       <width>171</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Capture entire screen</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="selectionRadioButton">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>60</y>
+       <width>171</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Capture selected area</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="windowRadioButton">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>90</y>
+       <width>181</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Capture active window</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -140,7 +179,7 @@
      <x>0</x>
      <y>0</y>
      <width>361</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="styleSheet">
