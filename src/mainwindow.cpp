@@ -100,7 +100,6 @@ void MainWindow::shootSelection()
   res = selector->exec();
   if(res == QDialog::Accepted)
     originalPixmap = selector->getSelection();
-
   resetAfterShoot();
   delete selector;
 }
@@ -134,11 +133,29 @@ void MainWindow::on_quitButton_clicked()
   close();
 }
 
-void MainWindow::on_screenRadioButton_clicked() { selectedMode = 0;}
+void MainWindow::on_screenRadioButton_clicked()
+{
+  selectedMode = 0;
+  ui->delaySpinBox->setDisabled(false);
+  ui->delaySpinBox->setValue(1);
+  ui->hideCheckBox->setChecked(true);
+}
 
-void MainWindow::on_selectionRadioButton_clicked() { selectedMode = 1; }
+void MainWindow::on_selectionRadioButton_clicked()
+{
+  selectedMode = 1;
+  ui->delaySpinBox->setDisabled(true);
+  ui->delaySpinBox->setValue(0);
+  ui->hideCheckBox->setChecked(true);
+}
 
-void MainWindow::on_windowRadioButton_clicked() { selectedMode = 2; }
+void MainWindow::on_windowRadioButton_clicked()
+{
+  selectedMode = 2;
+  ui->delaySpinBox->setDisabled(false);
+  ui->delaySpinBox->setValue(1);
+  ui->hideCheckBox->setChecked(true);
+}
 
 void MainWindow::on_delaySpinBox_valueChanged(int arg1)
 {
