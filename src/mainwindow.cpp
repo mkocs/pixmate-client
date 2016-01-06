@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
   ui->delaySpinBox->setSuffix(" s");
   ui->delaySpinBox->setMaximum(120);
+
+  QDesktopWidget *widget;
+  widget = new QDesktopWidget();
+  move((widget->screenGeometry(0).width()/2-this->width()/2), (widget->screenGeometry(0).height()/2-this->height()/2));
 }
 
 MainWindow::~MainWindow()
