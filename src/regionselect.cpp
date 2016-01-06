@@ -11,8 +11,7 @@ RegionSelect::RegionSelect(QWidget *parent):QDialog(parent)
     setWindowState(Qt::WindowFullScreen);
     setCursor(Qt::CrossCursor);
 
-    sizeDesktop = QApplication::desktop()->size();
-    resize(sizeDesktop);
+    this->setWindowState(Qt::WindowMaximized);
 
     QScreen *screen = QGuiApplication::primaryScreen();
     if(screen)
