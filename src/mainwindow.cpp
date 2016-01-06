@@ -50,7 +50,7 @@ void MainWindow::newScreenshot() {
     }
     case 1:
     {
-      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootSelection()));
+      QTimer::singleShot(200, this, SLOT(shootSelection()));
       break;
     }
     case 2:
