@@ -8,11 +8,12 @@
 RegionSelect::RegionSelect(QWidget *parent):QDialog(parent)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    setWindowState(Qt::WindowFullScreen);
+#ifdef __APPLE__
+    setWindowState(Qt::WindowMaximized);
+#else
+    setWindowState(Qt::WindowFullScreen)
+#endif
     setCursor(Qt::CrossCursor);
-
-    sizeDesktop = QApplication::desktop()->size();
-    resize(sizeDesktop);
 
     QScreen *screen = QGuiApplication::primaryScreen();
     if(screen)
