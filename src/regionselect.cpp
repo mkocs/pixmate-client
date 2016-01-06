@@ -11,7 +11,7 @@ RegionSelect::RegionSelect(QWidget *parent):QDialog(parent)
 #ifdef __APPLE__
     setWindowState(Qt::WindowMaximized);
 #else
-    setWindowState(Qt::WindowFullScreen)
+    setWindowState(Qt::WindowFullScreen);
 #endif
     setCursor(Qt::CrossCursor);
 
