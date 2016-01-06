@@ -80,7 +80,7 @@ void RegionSelect::drawBackground()
     painter.setBrush(QBrush(QColor(255, 255, 255, 180), Qt::SolidPattern));
     QRect txtBgRect = painter.boundingRect(txtRect, Qt::AlignCenter, txtToolTip);
 
-    // Set height & width of background rectangle
+    // Set height & width of text box rectangle
     txtBgRect.setX(txtBgRect.x() - 6);
     txtBgRect.setY(txtBgRect.y() - 4);
     txtBgRect.setWidth(txtBgRect.width() + 12);
