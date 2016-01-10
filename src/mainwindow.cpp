@@ -100,10 +100,10 @@ void MainWindow::shootScreen() {
 
 void MainWindow::shootSelection()
 {
-  selector = new RegionSelect();
+  selector = new RegionSelectionDialog();
   res = selector->exec();
   if(res == QDialog::Accepted)
-    originalPixmap = selector->getSelection();
+    originalPixmap = selector->GetSelectionPixmap();
   resetAfterShoot();
   delete selector;
 }

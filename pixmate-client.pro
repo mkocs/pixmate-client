@@ -15,10 +15,10 @@ TEMPLATE = app
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/screenshot.cpp \
-    src/regionselect.cpp
+    src/regionselectiondialog.cpp
 
 HEADERS  += src/mainwindow.h \
     src/screenshot.h \
-    src/regionselect.h
+    src/regionselectiondialog.h
 
 FORMS    += ui/mainwindow.ui

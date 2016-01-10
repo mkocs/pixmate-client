@@ -14,7 +14,7 @@
 #include <QHBoxLayout>
 #include <QSpinBox>
 #include <src/screenshot.h>
-#include <src/regionselect.h>
+#include <src/regionselectiondialog.h>
 
 namespace Ui {
   class MainWindow;
@@ -55,7 +55,7 @@ private:
       void initRadioButtons();
       void newSelection();
       int selectedMode;
-      RegionSelect *selector;
+      RegionSelectionDialog *selector;
       int res;
       void delay(int milliSec);
 };
