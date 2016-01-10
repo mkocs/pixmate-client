@@ -34,7 +34,7 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) 
 	
 	QScreen *screen = QGuiApplication::primaryScreen();
 	if (screen)
-		desktop_background_pixmap_ = screen->grabWindow(0);
+		desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
 	desktop_color_pixmap_ = desktop_background_pixmap_;
 
 	move(0,0);
@@ -155,6 +155,7 @@ void RegionSelectionDialog::DrawSelectionRectangle() {
 	painter_->setPen(QPen(QBrush(QColor(0, 0, 0, 255/*alpha channel*/)), 2));
 	painter_->drawRect(selection_rectangle_);
 	DrawSelectionResolutionText();
+	DrawSelectionZoomBox();
 }
 
 void RegionSelectionDialog::DrawSelectionResolutionText() {
