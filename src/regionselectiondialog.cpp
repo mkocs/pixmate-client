@@ -34,6 +34,10 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) 
 	
 	QScreen *screen = QGuiApplication::primaryScreen();
 	if (screen)
+		// The value of winId() is the OS-specific window type, depending on your platform:
+	    // MSWindows: HWND
+		// Mac: HIView
+		// X: Window
 		desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
 	desktop_color_pixmap_ = desktop_background_pixmap_;
 
