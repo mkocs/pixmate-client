@@ -54,7 +54,7 @@ void MainWindow::newScreenshot() {
     }
     case 1:
     {
-      QTimer::singleShot(215, this, SLOT(shootSelection()));
+      QTimer::singleShot(230, this, SLOT(shootSelection()));
       break;
     }
     case 2:
