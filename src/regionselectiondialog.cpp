@@ -135,7 +135,7 @@ void RegionSelectionDialog::DrawToolTipTextBackground(QRect textrectangle, QStri
 	textbackgroundrectangle.setY(textbackgroundrectangle.y() - 4);
 	textbackgroundrectangle.setWidth(textbackgroundrectangle.width() + 12);
 	textbackgroundrectangle.setHeight(textbackgroundrectangle.height() + 8);
-	painter.setPen(QPen(Qt::red));
+	painter.setPen(QPen(Qt::gray));
 	painter.setBrush(QBrush(QColor(255, 255, 255, 180), Qt::SolidPattern));
 	painter.drawRect(textbackgroundrectangle);
 }
@@ -180,7 +180,7 @@ void RegionSelectionDialog::DrawSelectionZoomBox(QPainter &painter) {
 		QRect zoom_rectangle = QRect(zoom_startpoint, zoom_endpoint);
 		QPixmap zoom_pixmap = desktop_color_pixmap_.copy(zoom_rectangle).scaled(QSize(zoom_side, zoom_side), Qt::KeepAspectRatio);
 		QPainter zoom_painter(&zoom_pixmap);
-		zoom_painter.setPen(QPen(QBrush(QColor(255, 0, 0, 180)), 2));
+		zoom_painter.setPen(QPen(QBrush(QColor(50, 50, 50, 180)), 2));
 		zoom_painter.drawRect(zoom_pixmap.rect());
 		zoom_painter.drawText(zoom_pixmap.rect().center() - QPoint(4, -4), "+");
 		QPoint zoom_center = selection_rectangle_.bottomRight();
