@@ -41,15 +41,15 @@ private:
 	// A screenshot is shown to the user as
 	// the background to offer a visual representation
 	// of the selected region.
-	void DrawBackground();
+	void DrawBackground(QPainter &painter);
 	// Draws the text explaining how to use the region
 	// selection and its surrounding box positioned at
 	// the top of the screen.
-	void DrawToolTipTextRectangle();
+	void DrawToolTipTextRectangle(QPainter &painter);
 	// Draws the background rectangle surrounding
 	// the tooltip text
-	void DrawToolTipTextBackground(QRect textrectangle, QString texttooltip);
-	void DrawToolTipText(QRect textbackgroundrectangle, QString texttooltip);
+	void DrawToolTipTextBackground(QRect textrectangle, QString texttooltip, QPainter &painter);
+	void DrawToolTipText(QRect textbackgroundrectangle, QString texttooltip, QPainter &painter);
 	// Sets the widget's palette (color group) to the
     // screenshot pixmap that is taken in the constructor
     // after drawing the overlay.
@@ -59,11 +59,10 @@ private:
 	// Draws the rectangle around the selected area
 	// when the user presses the left mouse button until
 	// he releases it.
-	void DrawSelectionRectangle();
-	void DrawSelectionResolutionText();
-	void DrawSelectionZoomBox();
+	void DrawSelectionRectangle(QPainter &painter);
+	void DrawSelectionResolutionText(QPainter &painter);
+	void DrawSelectionZoomBox(QPainter &painter);
 	
-	QPainter *painter_;
 	QPixmap desktop_background_pixmap_;
 	QPixmap desktop_color_pixmap_;
 	bool backgroundexists_;
