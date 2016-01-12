@@ -106,6 +106,7 @@ void RegionSelectionDialog::DrawOverlay() {
 	QPainter painter(&desktop_background_pixmap_);
 	DrawBackground(painter);
 	DrawToolTipTextRectangle(painter);
+	SetWidgetPalette();
 }
 
 // Sets the painter_'s brush to 85% opacity to give a
@@ -116,7 +117,6 @@ void RegionSelectionDialog::DrawOverlay() {
 void RegionSelectionDialog::DrawBackground(QPainter &painter) {
 	painter.setBrush(QBrush(QColor(0, 0, 0, 85), Qt::SolidPattern));
 	painter.drawRect(QApplication::desktop()->rect());
-	SetWidgetPalette();
 }
 
 void RegionSelectionDialog::DrawToolTipTextRectangle(QPainter &painter) {
