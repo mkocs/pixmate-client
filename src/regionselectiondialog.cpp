@@ -158,9 +158,9 @@ void RegionSelectionDialog::SetWidgetPalette() {
 
 void RegionSelectionDialog::DrawSelectionRectangle(QPainter &painter) {
 	painter.drawPixmap(selection_rectangle_, desktop_color_pixmap_, selection_rectangle_);
-	painter.setPen(QPen(QBrush(QColor(0, 0, 0, 255/*alpha channel*/)), 2));
-	painter.drawRect(selection_rectangle_);
 	DrawSelectionResolutionText(painter);
+	painter.setPen(QPen(QBrush(QColor(0, 0, 0, 0/*alpha channel*/)), 2));
+	painter.drawRect(selection_rectangle_);
 	DrawSelectionZoomBox(painter);
 }
 
