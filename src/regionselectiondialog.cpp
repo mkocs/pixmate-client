@@ -89,12 +89,13 @@ void RegionSelectionDialog::paintEvent(QPaintEvent *) {
 // Called if there has been a mouse related event.
 // Updates the currently selected rectangle to reach from the
 // start point (which is set in event(QEvent *event) if there was a
-// left mouse button click) to the current mouse pointer position.
+// left mouse button click) to the selection endpoint (the current mouse pointer position).
 // normalized() ensures the rectangle has a non-negative width
 // and height.
 void RegionSelectionDialog::mouseMoveEvent(QMouseEvent *event) {
 	QMouseEvent *mouseevent = static_cast<QMouseEvent*>(event);
 	selection_rectangle_ = QRect(selection_startpoint_, mouseevent->pos()).normalized();
+	selection_endpoint_ = mouseevent->pos();
 	update(); // invokes paintEvent(QPaintEvent *)
 }
 /*
