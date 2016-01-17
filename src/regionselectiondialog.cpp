@@ -157,6 +157,9 @@ void RegionSelectionDialog::SetWidgetPalette() {
 	}
 }
 
+// Called in case of a paintEvent. Draws/redraws the selection rectangle
+// every time there's an update.
+// Also calls the function to draw the zoom box and the resolution text
 void RegionSelectionDialog::DrawSelectionRectangle(QPainter &painter) {
 	painter.drawPixmap(selection_rectangle_, desktop_color_pixmap_, selection_rectangle_);
 	DrawSelectionResolutionText(painter);
@@ -165,11 +168,18 @@ void RegionSelectionDialog::DrawSelectionRectangle(QPainter &painter) {
 	DrawSelectionZoomBox(painter);
 }
 
+// Called from DrawSelectionRectangle()
+// Draws text showing the resolution of the current selection in the lower right corner
+// of the selection rectangle.
 void RegionSelectionDialog::DrawSelectionResolutionText(QPainter &painter) {
 	QString text_size = QApplication::tr("%1 x %2 px ").arg(selection_rectangle_.width()).arg(selection_rectangle_.height());
 	painter.drawText(selection_rectangle_, Qt::AlignBottom | Qt::AlignRight, text_size);
 }
 
+// Called from DrawSelectionRectangle()
+// Draws a magnified version of the area surrounding the mouse cursor
+// to give the user a better idea of where his selection currently
+// ends.
 void RegionSelectionDialog::DrawSelectionZoomBox(QPainter &painter) {
 	if (!selection_endpoint_.isNull()) {
 		const quint8 zoom_side = 200;
@@ -191,6 +201,7 @@ void RegionSelectionDialog::DrawSelectionZoomBox(QPainter &painter) {
 	}
 }
 
+// Called from mainwindow after creating a RegionSelectionDialog object.
 QPixmap RegionSelectionDialog::GetSelectionPixmap() {
 	QPixmap selection;
 	selection = desktop_color_pixmap_.copy(selection_rectangle_);
