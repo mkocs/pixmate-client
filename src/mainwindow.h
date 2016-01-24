@@ -29,14 +29,14 @@ class MainWindow : public QMainWindow
   ~MainWindow();
   void resizeEvent(QResizeEvent *);
   private slots:
-    void newScreenshot();
-    void saveScreenshot();
-    void shootScreen();
-    void shootSelection();
-    void resetAfterShoot();
+    void new_screenshot();
+    void save_screenshot();
+    void shoot_screen();
+    void shoot_selection();
+    void reset_ui();
 
-    void updateCheckBox();
-    void updateScreenshotLabel();
+    void update_checkbox();
+    void update_screenshot_label();
     void on_quitButton_clicked();
     void on_screenshotButton_clicked();
     void on_saveButton_clicked();
@@ -51,13 +51,10 @@ class MainWindow : public QMainWindow
 
 private:
       Ui::MainWindow *ui;
-      QPixmap originalPixmap;
-      void initRadioButtons();
-      void newSelection();
-      int selectedMode;
-      RegionSelectionDialog *selector;
-      int res;
-      void delay(int milliSec);
+      QPixmap original_pixmap_;
+      int selected_mode_;
+      RegionSelectionDialog *selection_dialog_;
+      int res_;
 };
 
 #endif // MAINWINDOW_H

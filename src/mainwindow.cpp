@@ -35,26 +35,26 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::resizeEvent(QResizeEvent *) {
-  QSize scaledSize = originalPixmap.size();
+  QSize scaledSize = original_pixmap_.size();
   scaledSize.scale(ui->screenshotLabel->size(), Qt::KeepAspectRatio);
   if(!ui->screenshotLabel->pixmap() || scaledSize != ui->screenshotLabel->pixmap()->size())
-    updateScreenshotLabel();
+    update_screenshot_label();
 }
 
-void MainWindow::newScreenshot() {
+void MainWindow::new_screenshot() {
   if(ui->hideCheckBox->isChecked())
     hide();
   ui->screenshotButton->setDisabled(true);
-  switch(selectedMode)
+  switch(selected_mode_)
   {
     case 0:
     {
-      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootScreen()));
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shoot_screen()));
       break;
     }
     case 1:
     {
-      QTimer::singleShot(230, this, SLOT(shootSelection()));
+      QTimer::singleShot(300, this, SLOT(shoot_selection()));
       break;
     }
     case 2:
@@ -63,24 +63,24 @@ void MainWindow::newScreenshot() {
     }
     default:
     {
-      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shootScreen()));
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shoot_screen()));
       break;
     }
   }
 }
 
-void MainWindow::saveScreenshot() {
+void MainWindow::save_screenshot() {
   QString format = "png";
   QString initialPath = QDir::currentPath() + tr("/Screenshot.") + format;
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"), initialPath, tr("%1 Files (*.%2);;All Files (*)").arg(format.toUpper()).arg(format));
 
   if(!fileName.isEmpty())
-    originalPixmap.save(fileName, format.toLatin1().constData());
+    original_pixmap_.save(fileName, format.toLatin1().constData());
 }
 
-void MainWindow::resetAfterShoot()
+void MainWindow::reset_ui()
 {
-  updateScreenshotLabel();
+  update_screenshot_label();
 
   ui->screenshotButton->setDisabled(false);
   ui->saveButton->setDisabled(false);
@@ -88,32 +88,32 @@ void MainWindow::resetAfterShoot()
     show();
 }
 
-void MainWindow::shootScreen() {
-  /*if(ui->delaySpinBox->value() != 0) {
+void MainWindow::shoot_screen() {
+  if(ui->delaySpinBox->value() != 0) {
     qApp->beep();
-  }*/
+  }
   QScreen *screen = QGuiApplication::primaryScreen();
   if(screen)
-    originalPixmap = screen->grabWindow(0);
-  resetAfterShoot();
+    original_pixmap_ = screen->grabWindow(0);
+  reset_ui();
 }
 
-void MainWindow::shootSelection()
+void MainWindow::shoot_selection()
 {
-  selector = new RegionSelectionDialog();
-  res = selector->exec();
-  if(res == QDialog::Accepted)
-    originalPixmap = selector->GetSelectionPixmap();
-  resetAfterShoot();
-  delete selector;
+  selection_dialog_ = new RegionSelectionDialog();
+  res_ = selection_dialog_->exec();
+  if(res_ == QDialog::Accepted)
+    original_pixmap_ = selection_dialog_->get_selection_pixmap();
+  reset_ui();
+  delete selection_dialog_;
 }
 
-void MainWindow::updateScreenshotLabel() {
-  if(!originalPixmap.isNull())
-    ui->screenshotLabel->setPixmap(originalPixmap.scaled(ui->screenshotLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+void MainWindow::update_screenshot_label() {
+  if(!original_pixmap_.isNull())
+    ui->screenshotLabel->setPixmap(original_pixmap_.scaled(ui->screenshotLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
-void MainWindow::updateCheckBox() {
+void MainWindow::update_checkbox() {
   if(ui->delaySpinBox->value() == 0) {
     ui->hideCheckBox->setDisabled(true);
     ui->hideCheckBox->setChecked(false);
@@ -124,12 +124,12 @@ void MainWindow::updateCheckBox() {
 
 void MainWindow::on_screenshotButton_clicked()
 {
-  newScreenshot();
+  new_screenshot();
 }
 
 void MainWindow::on_saveButton_clicked()
 {
-  saveScreenshot();
+  save_screenshot();
 }
 
 void MainWindow::on_quitButton_clicked()
@@ -139,7 +139,7 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_screenRadioButton_clicked()
 {
-  selectedMode = 0;
+  selected_mode_ = 0;
   ui->delaySpinBox->setDisabled(false);
   ui->delaySpinBox->setValue(1);
   ui->hideCheckBox->setChecked(true);
@@ -147,7 +147,7 @@ void MainWindow::on_screenRadioButton_clicked()
 
 void MainWindow::on_selectionRadioButton_clicked()
 {
-  selectedMode = 1;
+  selected_mode_ = 1;
   ui->delaySpinBox->setDisabled(true);
   ui->delaySpinBox->setValue(0);
   ui->hideCheckBox->setChecked(true);
@@ -155,7 +155,7 @@ void MainWindow::on_selectionRadioButton_clicked()
 
 void MainWindow::on_windowRadioButton_clicked()
 {
-  selectedMode = 2;
+  selected_mode_ = 2;
   ui->delaySpinBox->setDisabled(false);
   ui->delaySpinBox->setValue(1);
   ui->hideCheckBox->setChecked(true);

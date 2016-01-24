@@ -19,7 +19,7 @@ public:
 	// Returns the selected area as a pixmap.
 	// Called from the main window when the
 	// new screenshot button is pressed.
-	QPixmap GetSelectionPixmap();
+	QPixmap get_selection_pixmap();
 
 protected:
 	// Reimplementation of QObject's event() function.
@@ -34,34 +34,34 @@ private:
 	// Initializes the QPainter, then calls
 	// the different draw functions and passes
 	// the painter.
-	void DrawOverlay();
+	void draw_overlay();
 
 	// Draws the background from a Pixmap
 	// of the primary screen.
 	// A screenshot is shown to the user as
 	// the background to offer a visual representation
 	// of the selected region.
-	void DrawBackground(QPainter &painter);
+	void draw_background(QPainter &painter);
 	// Draws the text explaining how to use the region
 	// selection and its surrounding box positioned at
 	// the top of the screen.
-	void DrawToolTipTextRectangle(QPainter &painter);
+	void draw_tooltip_text_rectangle(QPainter &painter);
 	// Draws the background rectangle surrounding
 	// the tooltip text
-	void DrawToolTipTextBackground(QRect textrectangle, QString texttooltip, QPainter &painter);
-	void DrawToolTipText(QRect textbackgroundrectangle, QString texttooltip, QPainter &painter);
+	void draw_tooltip_text_background(QRect textrectangle, QString texttooltip, QPainter &painter);
+	void draw_tooltip_text(QRect textbackgroundrectangle, QString texttooltip, QPainter &painter);
 	// Sets the widget's palette (color group) to the
     // screenshot pixmap that is taken in the constructor
     // after drawing the overlay.
     // Otherwise the dialog would appear as a blank
     // field.
-	void SetWidgetPalette();
+	void set_widget_palette();
 	// Draws the rectangle around the selected area
 	// when the user presses the left mouse button until
 	// he releases it.
-	void DrawSelectionRectangle(QPainter &painter);
-	void DrawSelectionResolutionText(QPainter &painter);
-	void DrawSelectionZoomBox(QPainter &painter);
+	void draw_selection_rectangle(QPainter &painter);
+	void draw_selection_resolution_text(QPainter &painter);
+	void draw_selection_zoombox(QPainter &painter);
 	
 	QPixmap desktop_background_pixmap_;
 	QPixmap desktop_color_pixmap_;

@@ -42,7 +42,7 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) 
 	desktop_color_pixmap_ = desktop_background_pixmap_;
 
 	move(0,0);
-	DrawOverlay();
+	draw_overlay();
 }
 
 RegionSelectionDialog::~RegionSelectionDialog() {
@@ -83,7 +83,7 @@ void RegionSelectionDialog::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	if(!backgroundexists_)
 		painter.drawPixmap(QPoint(0,0), desktop_background_pixmap_);
-	DrawSelectionRectangle(painter);
+	draw_selection_rectangle(painter);
 }
 
 // Called if there has been a mouse related event.
@@ -103,33 +103,33 @@ void RegionSelectionDialog::mouseMoveEvent(QMouseEvent *event) {
  */
 
 
-void RegionSelectionDialog::DrawOverlay() {
+void RegionSelectionDialog::draw_overlay() {
 	QPainter painter(&desktop_background_pixmap_);
-	DrawBackground(painter);
-	DrawToolTipTextRectangle(painter);
-	SetWidgetPalette();
+	draw_background(painter);
+	draw_tooltip_text_rectangle(painter);
+	set_widget_palette();
 }
 
 // Sets the painter_'s brush to 85% opacity to give a
 // slightly transparent look to the background, draws
-// a rectangle with that setting and calls the the SetWidgetPalette
+// a rectangle with that setting and calls the the set_widget_palette
 // function to update the widget's palette to use the screenshot
 // pixmap as its background.
-void RegionSelectionDialog::DrawBackground(QPainter &painter) {
+void RegionSelectionDialog::draw_background(QPainter &painter) {
 	painter.setBrush(QBrush(QColor(0, 0, 0, 85), Qt::SolidPattern));
 	painter.drawRect(QApplication::desktop()->rect());
 }
 
-void RegionSelectionDialog::DrawToolTipTextRectangle(QPainter &painter) {
+void RegionSelectionDialog::draw_tooltip_text_rectangle(QPainter &painter) {
 	QRect textrectangle = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
 	float textboxheight = textrectangle.height();
    	QString text_tooltip = QApplication::tr("Use your mouse to select a region or\nexit by pressing any other key");
 	textrectangle.setHeight(qRound(textboxheight/10));
-	DrawToolTipTextBackground(textrectangle, text_tooltip, painter);
-	DrawToolTipText(textrectangle, text_tooltip, painter);
+	draw_tooltip_text_background(textrectangle, text_tooltip, painter);
+	draw_tooltip_text(textrectangle, text_tooltip, painter);
 }
 
-void RegionSelectionDialog::DrawToolTipTextBackground(QRect textrectangle, QString texttooltip, QPainter &painter) {
+void RegionSelectionDialog::draw_tooltip_text_background(QRect textrectangle, QString texttooltip, QPainter &painter) {
     QRect textbackgroundrectangle = painter.boundingRect(textrectangle, Qt::AlignCenter, texttooltip);
 	textbackgroundrectangle.setX(textbackgroundrectangle.x() - 6);
 	textbackgroundrectangle.setY(textbackgroundrectangle.y() - 4);
@@ -140,7 +140,7 @@ void RegionSelectionDialog::DrawToolTipTextBackground(QRect textrectangle, QStri
 	painter.drawRect(textbackgroundrectangle);
 }
 
-void RegionSelectionDialog::DrawToolTipText(QRect textbackgroundrectangle, QString texttooltip, QPainter &painter) {
+void RegionSelectionDialog::draw_tooltip_text(QRect textbackgroundrectangle, QString texttooltip, QPainter &painter) {
 	painter.setPen(QPen(Qt::black));
 	painter.drawText(textbackgroundrectangle, Qt::AlignCenter, texttooltip);
 }
@@ -148,7 +148,7 @@ void RegionSelectionDialog::DrawToolTipText(QRect textbackgroundrectangle, QStri
 // Takes the dialog's current palette as a base and sets the
 // brush color (sort of) to the screenshot pixmap that is taken in the
 // constructor.
-void RegionSelectionDialog::SetWidgetPalette() {
+void RegionSelectionDialog::set_widget_palette() {
 	backgroundexists_ = (qApp->desktop()->screenCount() > 1);
 	if (backgroundexists_) {
 		QPalette newwidgetpalette = palette();
@@ -160,27 +160,27 @@ void RegionSelectionDialog::SetWidgetPalette() {
 // Called in case of a paintEvent. Draws/redraws the selection rectangle
 // every time there's an update.
 // Also calls the function to draw the zoom box and the resolution text
-void RegionSelectionDialog::DrawSelectionRectangle(QPainter &painter) {
+void RegionSelectionDialog::draw_selection_rectangle(QPainter &painter) {
 	painter.drawPixmap(selection_rectangle_, desktop_color_pixmap_, selection_rectangle_);
-	DrawSelectionResolutionText(painter);
+	draw_selection_resolution_text(painter);
 	painter.setPen(QPen(QBrush(QColor(0, 0, 0, 0/*alpha channel*/)), 2));
 	painter.drawRect(selection_rectangle_);
-	DrawSelectionZoomBox(painter);
+	draw_selection_zoombox(painter);
 }
 
-// Called from DrawSelectionRectangle()
+// Called from draw_selection_rectangle()
 // Draws text showing the resolution of the current selection in the lower right corner
 // of the selection rectangle.
-void RegionSelectionDialog::DrawSelectionResolutionText(QPainter &painter) {
+void RegionSelectionDialog::draw_selection_resolution_text(QPainter &painter) {
 	QString text_size = QApplication::tr("%1 x %2 px ").arg(selection_rectangle_.width()).arg(selection_rectangle_.height());
 	painter.drawText(selection_rectangle_, Qt::AlignBottom | Qt::AlignRight, text_size);
 }
 
-// Called from DrawSelectionRectangle()
+// Called from draw_selection_rectangle()
 // Draws a magnified version of the area surrounding the mouse cursor
 // to give the user a better idea of where his selection currently
 // ends.
-void RegionSelectionDialog::DrawSelectionZoomBox(QPainter &painter) {
+void RegionSelectionDialog::draw_selection_zoombox(QPainter &painter) {
 	if (!selection_endpoint_.isNull()) {
 		const quint8 zoom_side = 200;
 		QPoint zoom_startpoint = selection_endpoint_;
@@ -202,7 +202,7 @@ void RegionSelectionDialog::DrawSelectionZoomBox(QPainter &painter) {
 }
 
 // Called from mainwindow after creating a RegionSelectionDialog object.
-QPixmap RegionSelectionDialog::GetSelectionPixmap() {
+QPixmap RegionSelectionDialog::get_selection_pixmap() {
 	QPixmap selection;
 	selection = desktop_color_pixmap_.copy(selection_rectangle_);
 	return selection;
