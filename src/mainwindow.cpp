@@ -7,11 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  ui->screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  ui->screenshotLabel->setAlignment(Qt::AlignCenter);
-  ui->screenshotLabel->setMinimumSize(240, 160);
 
-  ui->saveButton->setDisabled(true);
+  ui->windowRadioButton->setDisabled(true);
   ui->screenRadioButton->setChecked(true);
 
   QMenu *screenMenu = new QMenu("Screen", this);
@@ -34,83 +31,44 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow::resizeEvent(QResizeEvent *) {
-  QSize scaledSize = original_pixmap_.size();
-  scaledSize.scale(ui->screenshotLabel->size(), Qt::KeepAspectRatio);
-  if(!ui->screenshotLabel->pixmap() || scaledSize != ui->screenshotLabel->pixmap()->size())
-    update_screenshot_label();
-}
-
 void MainWindow::new_screenshot() {
-  if(ui->hideCheckBox->isChecked())
+  if (ui->hideCheckBox->isChecked())
     hide();
-  ui->screenshotButton->setDisabled(true);
-  switch(selected_mode_)
-  {
+  switch (selected_mode_) {
     case 0:
     {
-      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shoot_screen()));
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(take_regular_screenshot()));
       break;
     }
     case 1:
     {
-      QTimer::singleShot(300, this, SLOT(shoot_selection()));
-      break;
-    }
-    case 2:
-    {
+      QTimer::singleShot(300, this, SLOT(take_region_screenshot()));
       break;
     }
     default:
     {
-      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(shoot_screen()));
+      QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(take_regular_screenshot()));
       break;
     }
   }
 }
 
-void MainWindow::save_screenshot() {
-  QString format = "png";
-  QString initialPath = QDir::currentPath() + tr("/Screenshot.") + format;
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"), initialPath, tr("%1 Files (*.%2);;All Files (*)").arg(format.toUpper()).arg(format));
-
-  if(!fileName.isEmpty())
-    original_pixmap_.save(fileName, format.toLatin1().constData());
+void MainWindow::take_regular_screenshot() {
+  screenshot_ = new Screenshot();
+  screenshot_->take_screenshot();
+  screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
+  screenshot_dialog_->show();
 }
 
-void MainWindow::reset_ui()
-{
-  update_screenshot_label();
-
-  ui->screenshotButton->setDisabled(false);
-  ui->saveButton->setDisabled(false);
-  if(ui->hideCheckBox->isChecked())
-    show();
-}
-
-void MainWindow::shoot_screen() {
-  if(ui->delaySpinBox->value() != 0) {
-    qApp->beep();
-  }
-  QScreen *screen = QGuiApplication::primaryScreen();
-  if(screen)
-    original_pixmap_ = screen->grabWindow(0);
-  reset_ui();
-}
-
-void MainWindow::shoot_selection()
-{
+void MainWindow::take_region_screenshot() {
+  screenshot_ = new Screenshot();
   selection_dialog_ = new RegionSelectionDialog();
   res_ = selection_dialog_->exec();
-  if(res_ == QDialog::Accepted)
-    original_pixmap_ = selection_dialog_->get_selection_pixmap();
-  reset_ui();
+  if (res_ == QDialog::Accepted)
+    screenshot_->set_pixmap(selection_dialog_->get_selection_pixmap());
+  screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
+  screenshot_dialog_->show();
   delete selection_dialog_;
-}
-
-void MainWindow::update_screenshot_label() {
-  if(!original_pixmap_.isNull())
-    ui->screenshotLabel->setPixmap(original_pixmap_.scaled(ui->screenshotLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 void MainWindow::update_checkbox() {
@@ -125,11 +83,6 @@ void MainWindow::update_checkbox() {
 void MainWindow::on_screenshotButton_clicked()
 {
   new_screenshot();
-}
-
-void MainWindow::on_saveButton_clicked()
-{
-  save_screenshot();
 }
 
 void MainWindow::on_quitButton_clicked()
