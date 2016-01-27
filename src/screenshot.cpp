@@ -1,17 +1,22 @@
 #include <QtWidgets>
+#include <QApplication>
+#include <QScreen>
 #include "src/screenshot.h"
 #include "src/mainwindow.h"
 
 Screenshot::Screenshot() {
 }
 
-void Screenshot::newScreenshot(bool hideWindow, QWidget *parent, QPushButton *newScreenshotButton, QSpinBox *delaySpinBox) {
-  if(hideWindow)
-    parent->hide();
-  newScreenshotButton->setDisabled(true);
-  QTimer::singleShot(delaySpinBox->value() * 1000, parent, SLOT(shootScreen()));
+void Screenshot::take_screenshot() {
+  QScreen *screen = QGuiApplication::primaryScreen();
+  if (screen)
+    original_pixmap_ = screen->grabWindow(0);
 }
 
-void Screenshot::updateScreenshotLabel() {
+QPixmap *Screenshot::get_pixmap() {
+  return &original_pixmap_;
+}
 
+void Screenshot::set_pixmap(QPixmap pixmap) {
+  original_pixmap_ = pixmap;
 }

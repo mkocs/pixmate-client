@@ -15,6 +15,7 @@
 #include <QSpinBox>
 #include <src/screenshot.h>
 #include <src/regionselectiondialog.h>
+#include <src/screenshotdialog.h>
 
 namespace Ui {
   class MainWindow;
@@ -27,19 +28,14 @@ class MainWindow : public QMainWindow
  public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
-  void resizeEvent(QResizeEvent *);
   private slots:
+    void take_regular_screenshot();
+    void take_region_screenshot();
     void new_screenshot();
-    void save_screenshot();
-    void shoot_screen();
-    void shoot_selection();
-    void reset_ui();
 
     void update_checkbox();
-    void update_screenshot_label();
     void on_quitButton_clicked();
     void on_screenshotButton_clicked();
-    void on_saveButton_clicked();
 
     void on_screenRadioButton_clicked();
 
@@ -54,6 +50,8 @@ private:
       QPixmap original_pixmap_;
       int selected_mode_;
       RegionSelectionDialog *selection_dialog_;
+      ScreenshotDialog *screenshot_dialog_;
+      Screenshot *screenshot_;
       int res_;
 };
 

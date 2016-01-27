@@ -17,12 +17,12 @@
 // fullscreen. To avoid that, the dialog won't be fullscreen, but maximized
 // on Apple devices.
 // Also sets the cursor to a selection cross.
-// 
+//
 // Gets the primary screen and fetches a pixmap of the given
 // window (0, can be changed to fetch a pixmap of another screen) and assigns
 // it to the variable that will serve as background.
 RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) {
-	// See http://doc.qt.io/qt-5/qt.html for further information. 
+	// See http://doc.qt.io/qt-5/qt.html for further information.
 	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 	#ifdef __APPLE__
 	setWindowState(Qt::WindowMaximized);
@@ -31,7 +31,7 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) 
 	#endif
 
 	setCursor(Qt::CrossCursor);
-	
+
 	QScreen *screen = QGuiApplication::primaryScreen();
 	if (screen)
 		// The value of winId() is the OS-specific window type, depending on your platform:
@@ -111,7 +111,7 @@ void RegionSelectionDialog::draw_overlay() {
 }
 
 // Sets the painter_'s brush to 85% opacity to give a
-// slightly transparent look to the background, draws
+//× slightly transparent look to the background, draws
 // a rectangle with that setting and calls the the set_widget_palette
 // function to update the widget's palette to use the screenshot
 // pixmap as its background.
@@ -204,6 +204,11 @@ void RegionSelectionDialog::draw_selection_zoombox(QPainter &painter) {
 // Called from mainwindow after creating a RegionSelectionDialog object.
 QPixmap RegionSelectionDialog::get_selection_pixmap() {
 	QPixmap selection;
+  // copy(const QRect &rectangle = QRect()) returns a
+  // deep copy of the subset of the pixmap that is specified
+  // by the given rectangle.
+  // If the given rectangle is empty, the whole image
+  // is copied.
 	selection = desktop_color_pixmap_.copy(selection_rectangle_);
 	return selection;
 }
