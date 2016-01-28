@@ -24,7 +24,7 @@ QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
 
 void Share::upload(QByteArray *data) {
   QNetworkAccessManager *am = new QNetworkAccessManager();
-  QNetworkRequest request(QUrl("http://192.168.1.4:8000/api/upload"));
+  QNetworkRequest request(QUrl("http://localhost:8000/api/upload"));
   request.setHeader(QNetworkRequest::ContentTypeHeader, "image/ief");
   qDebug() << data;
   connect(am, SIGNAL(finished(QNetworkReply *)), this, SLOT(reply_finished(QNetworkReply *)));
