@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "src/screenshot.h"
+#include "src/regionselectiondialog.h"
+#include "src/screenshotdialog.h"
 #include <QMainWindow>
 #include <QDialog>
 #include <QWidget>
@@ -13,9 +16,6 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QSpinBox>
-#include <src/screenshot.h>
-#include <src/regionselectiondialog.h>
-#include <src/screenshotdialog.h>
 
 namespace Ui {
   class MainWindow;

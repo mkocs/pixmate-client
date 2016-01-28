@@ -23,6 +23,7 @@ ScreenshotDialog::ScreenshotDialog(QWidget *parent, Screenshot* screenshot) :
 
   connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(close()));
   connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(save_screenshot()));
+  connect(ui->shareButton, SIGNAL(clicked()), this, SLOT(share_screenshot()));
 
   screenshot_ = screenshot;
   set_label_pixmap();
@@ -52,4 +53,9 @@ void ScreenshotDialog::save_screenshot() {
 
   if(!fileName.isEmpty())
     screenshot_->get_pixmap()->save(fileName, format.toLatin1().constData());
+}
+
+void ScreenshotDialog::share_screenshot() {
+  share_ = new Share();
+  share_->share_screenshot(screenshot_->get_pixmap());
 }

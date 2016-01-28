@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QPixmap>
 #include "src/screenshot.h"
+#include "src/share.h"
 
 namespace Ui {
 class ScreenshotDialog;
@@ -20,6 +21,7 @@ public:
   void closeEvent(QCloseEvent *event);
 private slots:
   void save_screenshot();
+  void share_screenshot();
 
 signals:
   void dialogClosed();
@@ -29,6 +31,7 @@ private:
   Ui::ScreenshotDialog *ui;
   QWidget *parent_;
   Screenshot *screenshot_;
+  Share *share_;
 };
 
 #endif // SCREENSHOTDIALOG_H

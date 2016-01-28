@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,12 +16,14 @@ SOURCES += src/main.cpp\
         src/mainwindow.cpp \
     src/screenshot.cpp \
     src/regionselectiondialog.cpp \
-    src/screenshotdialog.cpp
+    src/screenshotdialog.cpp \
+    src/share.cpp
 
 HEADERS  += src/mainwindow.h \
     src/screenshot.h \
     src/regionselectiondialog.h \
-    src/screenshotdialog.h
+    src/screenshotdialog.h \
+    src/share.h
 
 FORMS    += ui/mainwindow.ui \
     ui/screenshotdialog.ui
