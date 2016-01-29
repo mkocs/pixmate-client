@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <QNetworkReply>
 #include <QObject>
+#include <QJsonValue>
 
 class Share : public QObject{
   Q_OBJECT
@@ -16,10 +17,10 @@ class Share : public QObject{
 
  private slots:
   void reply_finished(QNetworkReply *);
-  
+
  private:
   QByteArray convert_pxm_to_bytearray(QPixmap *pixmap);
-  void upload(QByteArray *data);
+  void upload(const QByteArray &data);
 };
 
 #endif
