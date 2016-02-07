@@ -22,7 +22,7 @@ class Share : public QObject{
   QDialog *sender_;
   QByteArray convert_pxm_to_bytearray(QPixmap *pixmap);
   void upload(const QByteArray &data);
-  void print_upload_status(short status_code);
+  void copy_url_to_clipboard(QNetworkReply *reply);
 };
 
 #endif

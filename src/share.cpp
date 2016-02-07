@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QHttpPart>
 #include <QVariant>
+#include <QApplication>
+#include <QClipboard>
 
 Share::Share(QDialog *sender) {
   sender_ = sender;
@@ -40,32 +42,46 @@ void Share::upload(const QByteArray &data) {
   image_part.setBody(data);
   multi_part->append(text_part);
   multi_part->append(image_part);
-  QNetworkRequest request(QUrl("http://192.168.1.5:8000/api/upload"));
+  QNetworkRequest request(QUrl("http://localhost:8000/api/upload"));
   QNetworkAccessManager *manager = new QNetworkAccessManager();
   connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(reply_finished(QNetworkReply *)));
   manager->post(request, multi_part);
 }
 
+// Documentation for QNetworkReply error codes: http://doc.qt.io/qt-5/qnetworkreply.html#NetworkError-enum
 void Share::reply_finished(QNetworkReply *reply) {
-  short status_code = reply->error();
-  print_upload_status(status_code);
-}
-
-void Share::print_upload_status(short status_code) {
   MessageDialog *mdiag;
-  switch (status_code) {
-  case 0:
-    mdiag = new MessageDialog(sender_, "Upload successful.");
-    break;
-  case 1:
-    mdiag = new MessageDialog(sender_, "The remote server refused the connection.");
-    break;
-  case 4:
-    mdiag = new MessageDialog(sender_, "The connection timed out.");
-    break;
+  switch (reply->error()) {
+  case QNetworkReply::NoError:
+    {
+      copy_url_to_clipboard(reply);
+      mdiag = new MessageDialog(sender_, "Upload successful.");
+      break;
+    }
+  case QNetworkReply::ConnectionRefusedError:
+    {
+      mdiag = new MessageDialog(sender_, "The remote server refused the connection.");
+      break;
+    }
+  case QNetworkReply::TimeoutError:
+    {
+      mdiag = new MessageDialog(sender_, "The connection timed out.");
+      break;
+    }
   default:
-    mdiag = new MessageDialog(sender_, "I'm sorry. An error occured and I could not finish the upload.");
-    break;
+    {
+      mdiag = new MessageDialog(sender_, "I'm sorry. An error occured and I could not finish the upload.");
+      break;
+    }
   }
   mdiag->exec();
 }
+
+// Server returns the ID for the uploaded image
+// This ID is copied to the clipboard, so it can
+// easily be shared.
+void Share::copy_url_to_clipboard(QNetworkReply *reply) {
+  QClipboard *clipboard = QApplication::clipboard();
+  clipboard->setText("http://localhost:8000/" + reply->readAll());
+}
+
