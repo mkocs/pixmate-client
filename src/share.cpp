@@ -55,7 +55,7 @@ void Share::reply_finished(QNetworkReply *reply) {
   case QNetworkReply::NoError:
     {
       copy_url_to_clipboard(reply);
-      mdiag = new MessageDialog(sender_, "Upload successful.");
+      mdiag = new MessageDialog(sender_, ("Upload successful.\nThe URL is in your clipboard."));
       break;
     }
   case QNetworkReply::ConnectionRefusedError:
