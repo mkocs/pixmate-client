@@ -5,13 +5,13 @@
 #include <QByteArray>
 #include <QNetworkReply>
 #include <QObject>
-#include <QJsonValue>
+#include <QDialog>
 
 class Share : public QObject{
   Q_OBJECT
 
  public:
-  Share();
+  Share(QDialog* sender);
   ~Share();
   void share_screenshot(QPixmap *pixmap);
 
@@ -19,8 +19,10 @@ class Share : public QObject{
   void reply_finished(QNetworkReply *);
 
  private:
+  QDialog *sender_;
   QByteArray convert_pxm_to_bytearray(QPixmap *pixmap);
   void upload(const QByteArray &data);
+  void print_upload_status(short status_code);
 };
 
 #endif

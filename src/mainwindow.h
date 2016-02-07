@@ -45,14 +45,14 @@ class MainWindow : public QMainWindow
 
     void on_delaySpinBox_valueChanged(int arg1);
 
-private:
-      Ui::MainWindow *ui;
-      QPixmap original_pixmap_;
-      int selected_mode_;
-      RegionSelectionDialog *selection_dialog_;
-      ScreenshotDialog *screenshot_dialog_;
-      Screenshot *screenshot_;
-      int res_;
+  private:
+    Ui::MainWindow *ui;
+    QPixmap original_pixmap_;
+    int selected_mode_;
+    RegionSelectionDialog *selection_dialog_;
+    ScreenshotDialog *screenshot_dialog_;
+    Screenshot *screenshot_;
+    int res_;
 };
 
 #endif // MAINWINDOW_H

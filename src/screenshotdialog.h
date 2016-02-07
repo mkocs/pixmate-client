@@ -1,11 +1,11 @@
 #ifndef SCREENSHOTDIALOG_H
 #define SCREENSHOTDIALOG_H
 
+#include "src/screenshot.h"
+#include "src/share.h"
 #include <QDialog>
 #include <QCloseEvent>
 #include <QPixmap>
-#include "src/screenshot.h"
-#include "src/share.h"
 
 namespace Ui {
 class ScreenshotDialog;
