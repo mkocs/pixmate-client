@@ -10,10 +10,12 @@
 #include <QHttpPart>
 #include <QVariant>
 #include <QApplication>
+#include <QTextCodec>
 #include <QClipboard>
 
-Share::Share(QDialog *sender) {
+Share::Share(QDialog *sender, Screenshot *screenshot) {
   sender_ = sender;
+  screenshot_ = screenshot;
 }
 
 Share::~Share() {}
@@ -34,8 +36,11 @@ QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
 void Share::upload(const QByteArray &data) {
   QHttpMultiPart *multi_part = new QHttpMultiPart(QHttpMultiPart::FormDataType);
   QHttpPart text_part;
-  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"imginfo\"\""));
-  text_part.setBody("Screenshot.png");
+  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"title\"\""));
+  QTextCodec *codec = QTextCodec::codecForName("UTF-16");
+  QTextEncoder *encoderWithoutBom = codec->makeEncoder(QTextCodec::IgnoreHeader);
+  QByteArray bytes  = encoderWithoutBom ->fromUnicode(screenshot_->get_pixmap_title());
+  text_part.setBody(bytes);
   QHttpPart image_part;
   image_part.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
   image_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\"; filename=\"Screenshot.png\""));

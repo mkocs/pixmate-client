@@ -56,6 +56,6 @@ void ScreenshotDialog::save_screenshot() {
 }
 
 void ScreenshotDialog::share_screenshot() {
-  share_ = new Share(this);
+  share_ = new Share(this, screenshot_);
   share_->share_screenshot(screenshot_->get_pixmap());
 }
