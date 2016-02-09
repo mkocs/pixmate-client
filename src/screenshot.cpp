@@ -28,6 +28,6 @@ QString Screenshot::get_pixmap_title() {
 void Screenshot::set_pixmap(QPixmap pixmap) {
   original_pixmap_ = pixmap;
   QDateTime date_time = QDateTime::currentDateTime();
-  QString date_time_string = date_time.toString("yyyy-mm-dd hh.mm.ss");
+  QString date_time_string = date_time.toString("yyyy-MM-dd hh.mm.ss");
   pixmap_title_ = QObject::tr("Screenshot-%1 at %2").arg(date_time_string.split(' ')[0]).arg(date_time_string.split(' ')[1]);
 }
