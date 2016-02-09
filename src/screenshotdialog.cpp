@@ -48,7 +48,7 @@ void ScreenshotDialog::set_label_pixmap() {
 
 void ScreenshotDialog::save_screenshot() {
   QString format = "png";
-  QString initialPath = QDir::currentPath() + tr("/Screenshot.") + format;
+  QString initialPath = QDir::currentPath() + tr("/%1.").arg(screenshot_->get_pixmap_title()) + format;
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"), initialPath, tr("%1 Files (*.%2);;All Files (*)").arg(format.toUpper()).arg(format));
 
   if(!fileName.isEmpty())

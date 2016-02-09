@@ -14,7 +14,7 @@ Screenshot::Screenshot() {
 void Screenshot::take_screenshot() {
   QScreen *screen = QGuiApplication::primaryScreen();
   if (screen)
-    original_pixmap_ = screen->grabWindow(0);
+    set_pixmap(screen->grabWindow(0));
 }
 
 QPixmap *Screenshot::get_pixmap() {
@@ -27,8 +27,7 @@ QString Screenshot::get_pixmap_title() {
 
 void Screenshot::set_pixmap(QPixmap pixmap) {
   original_pixmap_ = pixmap;
-  QDateTime *date_time = new QDateTime();
-  QDate date = date_time->date();
-  QTime time = date_time->time();
-  pixmap_title_ = QObject::tr("Screenshot-%1%2%3%4%5%6").arg(date.year()).arg(date.month()).arg(date.day()).arg(time.hour()).arg(time.minute()).arg(time.second());
+  QDateTime date_time = QDateTime::currentDateTime();
+  QString date_time_string = date_time.toString("yyyy-mm-dd hh.mm.ss");
+  pixmap_title_ = QObject::tr("Screenshot-%1 at %2").arg(date_time_string.split(' ')[0]).arg(date_time_string.split(' ')[1]);
 }

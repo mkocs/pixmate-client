@@ -36,17 +36,14 @@ QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
 void Share::upload(const QByteArray &data) {
   QHttpMultiPart *multi_part = new QHttpMultiPart(QHttpMultiPart::FormDataType);
   QHttpPart text_part;
-  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"title\"\""));
-  QTextCodec *codec = QTextCodec::codecForName("UTF-16");
-  QTextEncoder *encoderWithoutBom = codec->makeEncoder(QTextCodec::IgnoreHeader);
-  QByteArray bytes  = encoderWithoutBom ->fromUnicode(screenshot_->get_pixmap_title());
-  text_part.setBody(bytes);
+  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"title\""));
+  text_part.setBody(screenshot_->get_pixmap_title().toLatin1());
   QHttpPart image_part;
   image_part.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
   image_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\"; filename=\"Screenshot.png\""));
   image_part.setBody(data);
-  multi_part->append(text_part);
   multi_part->append(image_part);
+  multi_part->append(text_part);
   QNetworkRequest request(QUrl("http://localhost:8000/api/upload"));
   QNetworkAccessManager *manager = new QNetworkAccessManager();
   connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(reply_finished(QNetworkReply *)));
