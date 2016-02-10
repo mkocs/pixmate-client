@@ -12,6 +12,7 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QClipboard>
+#include <QSsl>
 
 Share::Share(QDialog *sender, Screenshot *screenshot) {
   sender_ = sender;
@@ -44,7 +45,10 @@ void Share::upload(const QByteArray &data) {
   image_part.setBody(data);
   multi_part->append(image_part);
   multi_part->append(text_part);
-  QNetworkRequest request(QUrl("http://localhost:8000/api/upload"));
+  QNetworkRequest request(QUrl("https://localhost:8001/api/upload"));
+  QSslConfiguration conf = request.sslConfiguration();
+  conf.setPeerVerifyMode(QSslSocket::VerifyNone); // Verify none while using unsigned certificate on server side
+  request.setSslConfiguration(conf);
   QNetworkAccessManager *manager = new QNetworkAccessManager();
   connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(reply_finished(QNetworkReply *)));
   manager->post(request, multi_part);
@@ -84,6 +88,6 @@ void Share::reply_finished(QNetworkReply *reply) {
 // easily be shared.
 void Share::copy_url_to_clipboard(QNetworkReply *reply) {
   QClipboard *clipboard = QApplication::clipboard();
-  clipboard->setText("http://localhost:8000/" + reply->readAll());
+  clipboard->setText("https://localhost:8001/" + reply->readAll());
 }
 
