@@ -19,6 +19,8 @@ class Screenshot
  private:
   QPixmap original_pixmap_;
   QString pixmap_title_;
+
+  void set_pixmap_title(QString title);
 };
 
 #endif // SCREENSHOT_H
