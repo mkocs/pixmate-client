@@ -123,7 +123,7 @@ void RegionSelectionDialog::draw_background(QPainter &painter) {
 void RegionSelectionDialog::draw_tooltip_text_rectangle(QPainter &painter) {
 	QRect textrectangle = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
 	float textboxheight = textrectangle.height();
-   	QString text_tooltip = QApplication::tr("Use your mouse to select a region or\nexit by pressing any other key");
+   	QString text_tooltip = QApplication::tr("Use your mouse to select a region or\nexit by pressing ESC");
 	textrectangle.setHeight(qRound(textboxheight/10));
 	draw_tooltip_text_background(textrectangle, text_tooltip, painter);
 	draw_tooltip_text(textrectangle, text_tooltip, painter);
