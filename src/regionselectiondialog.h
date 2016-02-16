@@ -2,6 +2,7 @@
 #define REGIONSELECTIONDIALOG_H
 
 #include <QDialog>
+#include <QDesktopWidget>
 #include <QPainter>
 #include <QPixmap>
 #include <QRect>
@@ -31,6 +32,13 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 
 private:
+  void center_dialog(QDesktopWidget *widget);
+  void grab_background(bool multiple_screens,
+                       int start_x = 0,
+                       int start_y = 0,
+                       int end_x = 0,
+                       int end_y = 0);
+
 	// Initializes the QPainter, then calls
 	// the different draw functions and passes
 	// the painter.

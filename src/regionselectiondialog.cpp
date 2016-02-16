@@ -1,7 +1,6 @@
 #include "src/regionselectiondialog.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QtGlobal>
 #include <QPen>
 #include <QBrush>
@@ -32,16 +31,10 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent) 
 
 	setCursor(Qt::CrossCursor);
 
-	QScreen *screen = QGuiApplication::primaryScreen();
-	if (screen)
-		// The value of winId() is the OS-specific window type, depending on your platform:
-	    // MSWindows: HWND
-		// Mac: HIView
-		// X: Window
-		desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
-	desktop_color_pixmap_ = desktop_background_pixmap_;
+  QDesktopWidget *widget;
+  widget = new QDesktopWidget();
+  center_dialog(widget);
 
-	move(0,0);
 	draw_overlay();
 }
 
@@ -102,6 +95,58 @@ void RegionSelectionDialog::mouseMoveEvent(QMouseEvent *event) {
  * </EVENTS>
  */
 
+
+void RegionSelectionDialog::center_dialog(QDesktopWidget *widget) {
+  if (widget->screenCount() > 1) {
+    int start_x = 0, start_y = 0;
+    int end_x = 0, end_y = 0;
+    int cursor_x = QCursor::pos().x();
+    int cursor_y = QCursor::pos().y();
+    for(int i = 0; i < widget->screenCount(); i++) {
+      if (i > 0) {
+        start_x += end_x;
+        end_x += widget->screenGeometry(i).width();
+        end_y += widget->screenGeometry(i).height();
+      } else {
+        start_x = 0;
+        end_x = widget->screenGeometry(i).width();
+        end_y = widget->screenGeometry(i).height();
+      }
+      if (cursor_x >= start_x && cursor_x <= end_x &&
+          cursor_y >= start_y && cursor_y <= end_y) {
+        move(start_x, 0);
+        grab_background(true, start_x, start_y, end_x, end_y);
+      }
+    }
+  } else {
+    move(0,0);
+    grab_background(false);
+  }
+}
+
+void RegionSelectionDialog::grab_background(bool multiple_screens,
+                                            int start_x,
+                                            int start_y,
+                                            int end_x,
+                                            int end_y) {
+  QScreen *screen = QGuiApplication::primaryScreen();
+  if (screen) {
+    if (multiple_screens)
+      // The value of winId() is the OS-specific window type, depending on your platform:
+      // MSWindows: HWND
+      // Mac: HIView
+      // X: Window
+      desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId(), start_x, start_y, (end_x-start_x), (end_y-start_y));
+      desktop_color_pixmap_ = desktop_background_pixmap_;
+  } else {
+    // The value of winId() is the OS-specific window type, depending on your platform:
+    // MSWindows: HWND
+    // Mac: HIView
+    // X: Window
+    desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
+    desktop_color_pixmap_ = desktop_background_pixmap_;
+  }
+}
 
 void RegionSelectionDialog::draw_overlay() {
 	QPainter painter(&desktop_background_pixmap_);
