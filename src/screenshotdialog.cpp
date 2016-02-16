@@ -1,5 +1,6 @@
 #include "src/screenshotdialog.h"
 #include "ui_screenshotdialog.h"
+#include "src/centralize.h"
 #include <QDesktopWidget>
 #include <QString>
 #include <QDir>
@@ -13,9 +14,7 @@ ScreenshotDialog::ScreenshotDialog(QWidget *parent, Screenshot* screenshot) :
 
   parent_ = parent;
 
-  QDesktopWidget *widget;
-  widget = new QDesktopWidget();
-  move((widget->screenGeometry(0).width()/2-this->width()/2), (widget->screenGeometry(0).height()/2-this->height()/2));
+  Centralize::center_window(this);
 
   ui->screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   ui->screenshotLabel->setAlignment(Qt::AlignCenter);

@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "src/centralize.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -32,9 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->delaySpinBox->setSuffix(" s");
   ui->delaySpinBox->setMaximum(120);
 
-  QDesktopWidget *widget;
-  widget = new QDesktopWidget();
-  center_window(widget);
+  Centralize::center_window(this);
 }
 
 MainWindow::~MainWindow()
@@ -89,32 +88,6 @@ void MainWindow::take_region_screenshot() {
     show();
   }
   delete selection_dialog_;
-}
-
-void MainWindow::center_window(QDesktopWidget *widget) {
-  if (widget->screenCount() > 1) {
-    int start_x = 0, start_y = 0;
-    int end_x = 0, end_y = 0;
-    int cursor_x = QCursor::pos().x();
-    int cursor_y = QCursor::pos().y();
-    for(int i = 0; i < widget->screenCount(); i++) {
-      if (i > 0) {
-        start_x += end_x;
-        end_x += widget->screenGeometry(i).width();
-        end_y += widget->screenGeometry(i).height();
-      } else {
-        start_x = 0;
-        end_x = widget->screenGeometry(i).width();
-        end_y = widget->screenGeometry(i).height();
-      }
-      if (cursor_x >= start_x && cursor_x <= end_x &&
-          cursor_y >= start_y && cursor_y <= end_y) {
-        move(start_x + (widget->screenGeometry(i).width()/2-(width()/2)), widget->screenGeometry(i).height()/2-height()/2);
-      }
-    }
-  } else {
-    move((widget->screenGeometry(0).width()/2-this->width()/2), (widget->screenGeometry(0).height()/2-this->height()/2));
-  }
 }
 
 void MainWindow::update_checkbox() {
