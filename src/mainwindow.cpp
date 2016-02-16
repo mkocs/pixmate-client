@@ -100,12 +100,10 @@ void MainWindow::center_window(QDesktopWidget *widget) {
     for(int i = 0; i < widget->screenCount(); i++) {
       if (i > 0) {
         start_x += end_x;
-        start_y += end_y;
         end_x += widget->screenGeometry(i).width();
         end_y += widget->screenGeometry(i).height();
       } else {
         start_x = 0;
-        start_y = 0;
         end_x = widget->screenGeometry(i).width();
         end_y = widget->screenGeometry(i).height();
       }
