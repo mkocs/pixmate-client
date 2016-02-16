@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QDialog>
 #include <QWidget>
+#include <QDesktopWidget>
 #include <QPixmap>
 #include <QPushButton>
 #include <QLabel>
@@ -46,6 +47,7 @@ class MainWindow : public QMainWindow
     void on_delaySpinBox_valueChanged(int arg1);
 
   private:
+    void center_window(QDesktopWidget *widget);
     Ui::MainWindow *ui;
     QPixmap original_pixmap_;
     int selected_mode_;
