@@ -5,8 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = pixmate
 TEMPLATE = app
 
-CONFIG += c++14
-
+CONFIG += c++11
 
 SOURCES += src/main.cpp\
         src/mainwindow.cpp \
