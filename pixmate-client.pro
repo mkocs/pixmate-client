@@ -13,14 +13,16 @@ SOURCES += src/main.cpp\
     src/regionselectiondialog.cpp \
     src/screenshotdialog.cpp \
     src/share.cpp \
-    src/messagedialog.cpp
+    src/messagedialog.cpp \
+    src/centralize.cpp
 
 HEADERS  += src/mainwindow.h \
     src/screenshot.h \
     src/regionselectiondialog.h \
     src/screenshotdialog.h \
     src/share.h \
-    src/messagedialog.h
+    src/messagedialog.h \
+    src/centralize.h
 
 FORMS    += ui/mainwindow.ui \
     ui/screenshotdialog.ui \
