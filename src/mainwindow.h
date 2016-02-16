@@ -1,9 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "src/screenshot.h"
+#include "src/regionselectiondialog.h"
+#include "src/screenshotdialog.h"
 #include <QMainWindow>
 #include <QDialog>
 #include <QWidget>
+#include <QDesktopWidget>
 #include <QPixmap>
 #include <QPushButton>
 #include <QLabel>
@@ -13,9 +17,6 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QSpinBox>
-#include <src/screenshot.h>
-#include <src/regionselectiondialog.h>
-#include <src/screenshotdialog.h>
 
 namespace Ui {
   class MainWindow;
@@ -45,14 +46,14 @@ class MainWindow : public QMainWindow
 
     void on_delaySpinBox_valueChanged(int arg1);
 
-private:
-      Ui::MainWindow *ui;
-      QPixmap original_pixmap_;
-      int selected_mode_;
-      RegionSelectionDialog *selection_dialog_;
-      ScreenshotDialog *screenshot_dialog_;
-      Screenshot *screenshot_;
-      int res_;
+  private:
+    Ui::MainWindow *ui;
+    QPixmap original_pixmap_;
+    int selected_mode_;
+    RegionSelectionDialog *selection_dialog_;
+    ScreenshotDialog *screenshot_dialog_;
+    Screenshot *screenshot_;
+    int res_;
 };
 
 #endif // MAINWINDOW_H

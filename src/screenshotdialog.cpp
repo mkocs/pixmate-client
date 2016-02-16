@@ -1,5 +1,6 @@
 #include "src/screenshotdialog.h"
 #include "ui_screenshotdialog.h"
+#include "src/centralize.h"
 #include <QDesktopWidget>
 #include <QString>
 #include <QDir>
@@ -13,9 +14,7 @@ ScreenshotDialog::ScreenshotDialog(QWidget *parent, Screenshot* screenshot) :
 
   parent_ = parent;
 
-  QDesktopWidget *widget;
-  widget = new QDesktopWidget();
-  move((widget->screenGeometry(0).width()/2-this->width()/2), (widget->screenGeometry(0).height()/2-this->height()/2));
+  Centralize::center_window(this);
 
   ui->screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   ui->screenshotLabel->setAlignment(Qt::AlignCenter);
@@ -23,6 +22,7 @@ ScreenshotDialog::ScreenshotDialog(QWidget *parent, Screenshot* screenshot) :
 
   connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(close()));
   connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(save_screenshot()));
+  connect(ui->shareButton, SIGNAL(clicked()), this, SLOT(share_screenshot()));
 
   screenshot_ = screenshot;
   set_label_pixmap();
@@ -47,9 +47,16 @@ void ScreenshotDialog::set_label_pixmap() {
 
 void ScreenshotDialog::save_screenshot() {
   QString format = "png";
-  QString initialPath = QDir::currentPath() + tr("/Screenshot.") + format;
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"), initialPath, tr("%1 Files (*.%2);;All Files (*)").arg(format.toUpper()).arg(format));
+  QString initialPath = QDir::homePath() + tr("/%1.").arg(screenshot_->get_pixmap_title()) + format;
+  QFileDialog fdiag;
+  fdiag.selectFile(screenshot_->get_pixmap_title() + format);
+  QString fileName = fdiag.getSaveFileName(this, tr("Save as"), initialPath, tr("%1 Files (*.%2);;All Files (*)").arg(format.toUpper()).arg(format));
 
   if(!fileName.isEmpty())
     screenshot_->get_pixmap()->save(fileName, format.toLatin1().constData());
+}
+
+void ScreenshotDialog::share_screenshot() {
+  share_ = new Share(this, screenshot_);
+  share_->share_screenshot(screenshot_->get_pixmap());
 }

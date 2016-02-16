@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "src/centralize.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -32,9 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->delaySpinBox->setSuffix(" s");
   ui->delaySpinBox->setMaximum(120);
 
-  QDesktopWidget *widget;
-  widget = new QDesktopWidget();
-  move((widget->screenGeometry(0).width()/2-this->width()/2), (widget->screenGeometry(0).height()/2-this->height()/2));
+  Centralize::center_window(this);
 }
 
 MainWindow::~MainWindow()
@@ -67,18 +66,27 @@ void MainWindow::new_screenshot() {
 void MainWindow::take_regular_screenshot() {
   screenshot_ = new Screenshot();
   screenshot_->take_screenshot();
-  screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
-  screenshot_dialog_->show();
+  if (!screenshot_->get_pixmap()->isNull()) {
+    screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
+    screenshot_dialog_->show();
+  }
 }
 
 void MainWindow::take_region_screenshot() {
   screenshot_ = new Screenshot();
   selection_dialog_ = new RegionSelectionDialog();
   res_ = selection_dialog_->exec();
-  if (res_ == QDialog::Accepted)
-    screenshot_->set_pixmap(selection_dialog_->get_selection_pixmap());
-  screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
-  screenshot_dialog_->show();
+  if (res_ == QDialog::Accepted) {
+    if (!selection_dialog_->get_selection_pixmap().isNull()) {
+      screenshot_->set_pixmap(selection_dialog_->get_selection_pixmap());
+      screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
+      screenshot_dialog_->show();
+    } else {
+      show();
+    }
+  } else {
+    show();
+  }
   delete selection_dialog_;
 }
 
