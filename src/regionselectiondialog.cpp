@@ -139,10 +139,6 @@ void RegionSelectionDialog::grab_background(bool multiple_screens,
       desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId(), start_x, start_y, (end_x-start_x), (end_y-start_y));
       desktop_color_pixmap_ = desktop_background_pixmap_;
     } else {
-      // The value of winId() is the OS-specific window type, depending on your platform:
-      // MSWindows: HWND
-      // Mac: HIView
-      // X: Window
       desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
       desktop_color_pixmap_ = desktop_background_pixmap_;
     }
