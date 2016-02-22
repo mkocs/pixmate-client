@@ -21,9 +21,9 @@ Share::Share(QDialog *sender, Screenshot *screenshot) {
 
 Share::~Share() {}
 
-void Share::share_screenshot(QPixmap *pixmap) {
+void Share::share_screenshot(QPixmap *pixmap, int ttlTime, int ttlViews) {
   QByteArray byte_array = convert_pxm_to_bytearray(pixmap);
-  upload(byte_array);
+  upload(byte_array, ttlTime, ttlViews);
 }
 
 QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
@@ -34,16 +34,22 @@ QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
   return byte_array;
 }
 
-void Share::upload(const QByteArray &data) {
+void Share::upload(const QByteArray &data, int ttl_time, int ttl_views) {
   QHttpMultiPart *multi_part = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-  QHttpPart text_part;
-  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"title\""));
-  text_part.setBody(screenshot_->get_pixmap_title().toLatin1());
   QHttpPart image_part;
   image_part.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
   image_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"image\"; filename=\"Screenshot.png\""));
   image_part.setBody(data);
   multi_part->append(image_part);
+  QHttpPart text_part;
+  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"title\""));
+  text_part.setBody(screenshot_->get_pixmap_title().toLatin1());
+  multi_part->append(text_part);
+  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"ttltime\""));
+  text_part.setBody(QString::number(ttl_time).toLatin1());
+  multi_part->append(text_part);
+  text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"ttlviews\""));
+  text_part.setBody(QString::number(ttl_views).toLatin1());
   multi_part->append(text_part);
   QNetworkRequest request(QUrl("https://localhost:8001/api/upload"));
   QSslConfiguration conf = request.sslConfiguration();

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QDir>
 #include <QFileDialog>
+#define TTL_TIME_DEFAULT 80640 
+#define TTL_VIEWS_DEFAULT -1
 
 ScreenshotDialog::ScreenshotDialog(QWidget *parent, Screenshot* screenshot) :
   QDialog(parent),
@@ -58,5 +60,19 @@ void ScreenshotDialog::save_screenshot() {
 
 void ScreenshotDialog::share_screenshot() {
   share_ = new Share(this, screenshot_);
-  share_->share_screenshot(screenshot_->get_pixmap());
+  int ttl_time, ttl_views;
+  if(ui->ttlTimeCheckBox->isChecked()) {
+    ttl_time = ui->ttlTimeSpinBox->value();
+  } else {
+    ttl_time = TTL_TIME_DEFAULT;
+  }
+  if (ui->ttlViewsCheckBox->isChecked()) {
+    ttl_views = ui->ttlViewsSpinBox->value();
+  } else {
+    ttl_views = TTL_VIEWS_DEFAULT;
+  }
+  if (ui->customTitleLineEdit->text().length() > 0) {
+    screenshot_->set_pixmap_title(ui->customTitleLineEdit->text());
+  }
+  share_->share_screenshot(screenshot_->get_pixmap(), ttl_time, ttl_views);
 }

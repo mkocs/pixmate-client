@@ -15,12 +15,11 @@ class Screenshot
   QString get_pixmap_title();
   void set_pixmap(QPixmap pixmap);
   void take_screenshot();
+  void set_pixmap_title(QString title);
 
  private:
   QPixmap original_pixmap_;
   QString pixmap_title_;
-
-  void set_pixmap_title(QString title);
 };
 
 #endif // SCREENSHOT_H
