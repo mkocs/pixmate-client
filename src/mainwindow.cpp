@@ -10,18 +10,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
+#ifdef __APPLE__
   GKeys::setOSXKeys(this);
-
+#endif
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
   // room on the bottom.
   // To avoid so much space being wasted, the window
   // size has to be reduced on Apple devices.
-  #ifdef __APPLE__
+#ifdef __APPLE__
   this->setMinimumHeight(height()-25);
   this->setMaximumHeight(height()-25);
   resize(width(), height()-25);
-  #endif
+#endif
 
   ui->windowRadioButton->setDisabled(true);
   ui->screenRadioButton->setChecked(true);
