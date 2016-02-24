@@ -1,6 +1,7 @@
 #include "gkeys.h"
 
 namespace GKeys {
+#ifdef __APPLE__
   void setOSXKeys(MainWindow *mwin) {
     //Register the Hotkeys
     EventHotKeyRef gMyHotKeyRef;
@@ -20,5 +21,6 @@ namespace GKeys {
     static_cast<MainWindow*>(userData)->new_screenshot();
     return noErr;
   }
+#endif
 }
 
