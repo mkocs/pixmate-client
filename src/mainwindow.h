@@ -29,10 +29,11 @@ class MainWindow : public QMainWindow
  public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
+  public slots:
+    void new_screenshot();
   private slots:
     void take_regular_screenshot();
     void take_region_screenshot();
-    void new_screenshot();
 
     void update_checkbox();
     void on_quitButton_clicked();

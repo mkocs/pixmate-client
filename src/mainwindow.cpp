@@ -1,13 +1,16 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "src/centralize.h"
+#include "centralize.h"
+#include "gkeys.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+
+  GKeys::setOSXKeys(this);
 
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
