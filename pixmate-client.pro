@@ -14,7 +14,8 @@ SOURCES += src/main.cpp\
     src/screenshotdialog.cpp \
     src/share.cpp \
     src/messagedialog.cpp \
-    src/centralize.cpp
+    src/centralize.cpp \
+    src/gkeys.cpp
 
 HEADERS  += src/mainwindow.h \
     src/screenshot.h \
@@ -22,7 +23,8 @@ HEADERS  += src/mainwindow.h \
     src/screenshotdialog.h \
     src/share.h \
     src/messagedialog.h \
-    src/centralize.h
+    src/centralize.h \
+    src/gkeys.h
 
 FORMS    += ui/mainwindow.ui \
     ui/screenshotdialog.ui \
@@ -40,3 +42,11 @@ DISTFILES += \
 
 RESOURCES += \
     resources.qrc
+
+unix:!macx {}
+
+macx {
+    LIBS += -framework Carbon
+}
+
+win32 {}
