@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 
 #ifdef __APPLE__
-  GKeys::setOSXKeys(this);
+  GKeys::set_osx_keys(this);
 #endif
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
