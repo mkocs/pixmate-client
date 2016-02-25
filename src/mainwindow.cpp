@@ -12,7 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef __APPLE__
   GKeys::set_osx_keys(this);
+#elif defined _WIN32
+  GKeys::set_win32_keys(this);
+  //#elif defined __unix__
 #endif
+
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
   // room on the bottom.

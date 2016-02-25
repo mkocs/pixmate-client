@@ -1,4 +1,7 @@
 #include "gkeys.h"
+#ifdef _WIN32
+#include <QGuiApplication>
+#endif
 
 namespace GKeys {
 #ifdef __APPLE__
@@ -22,6 +25,26 @@ namespace GKeys {
   {
     static_cast<MainWindow*>(user_data)->new_screenshot();
     return noErr;
+  }
+#elif defined _WIN32
+  void set_win32_keys(MainWindow *mwin) {
+    /*See https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx for virtual key codes*/
+    HWND main_hwnd = (HWND)mwin->winId();
+    RegisterHotKey(main_hwnd, 2, MOD_CONTROL | MOD_SHIFT, 0x32 /*2 key*/);
+    MSG *msg;
+    msg = new MSG();
+    BOOL b_ret;
+    while ((b_ret = GetMessage(msg, main_hwnd, 0, 0)) != 0) {
+      if (b_ret == -1) {
+        qDebug() << "Error";
+      } else {
+        if (msg->message == WM_HOTKEY) {
+          mwin->new_screenshot();
+          qDebug() << msg;
+        }
+      }
+    }
+    /*https://msdn.microsoft.com/en-us/library/windows/desktop/ms646327(v=vs.85).aspx for unregistering*/
   }
 #endif
 }
