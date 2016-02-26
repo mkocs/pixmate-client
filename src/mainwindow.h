@@ -33,7 +33,7 @@ class MainWindow : public QMainWindow
   bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 #endif
   public slots:
-    void new_screenshot();
+    void new_screenshot(int sel = -1);
   private slots:
     void take_regular_screenshot();
     void take_region_screenshot();
