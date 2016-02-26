@@ -64,9 +64,13 @@ MainWindow::~MainWindow()
   }
 #endif
 
-void MainWindow::new_screenshot() {
+void MainWindow::new_screenshot(int sel) {
   if (ui->hideCheckBox->isChecked())
     hide();
+
+  if (sel > -1)
+    selected_mode_ = sel;
+  
   switch (selected_mode_) {
     case 0:
     {

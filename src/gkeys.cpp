@@ -15,15 +15,44 @@ namespace GKeys {
     event_type.eventClass = kEventClassKeyboard;
     event_type.eventKind = kEventHotKeyPressed;
     InstallApplicationEventHandler(&osx_key_handler, 1, &event_type, mwin, NULL);
+    g_hotkey_id.signature = 'htk0';
+    g_hotkey_id.id = 0;
+    RegisterEventHotKey(kVK_ANSI_1 /*0x12*/, cmdKey /*0x37*/ + shiftKey /*0x38*/, g_hotkey_id,
+                        GetApplicationEventTarget(), 0, &g_hotkey_reference);
+
     g_hotkey_id.signature = 'htk1';
     g_hotkey_id.id = 1;
-    RegisterEventHotKey(kVK_ANSI_2 /*0x13*/, cmdKey /*0x37*/ +shiftKey /*0x38*/, g_hotkey_id,
+    RegisterEventHotKey(kVK_ANSI_2 /*0x13*/, cmdKey /*0x37*/ + shiftKey /*0x38*/, g_hotkey_id,
                         GetApplicationEventTarget(), 0, &g_hotkey_reference);
+
+    g_hotkey_id.signature = 'htk2';
+    g_hotkey_id.id = 2;
+    RegisterEventHotKey(kVK_ANSI_O /*0x13*/, cmdKey /*0x37*/ + shiftKey /*0x38*/, g_hotkey_id,
+                        GetApplicationEventTarget(), 0, &g_hotkey_reference);
+
+
   }
 
   OSStatus osx_key_handler(EventHandlerCallRef next_handler,EventRef the_event, void *user_data)
   {
-    static_cast<MainWindow*>(user_data)->new_screenshot();
+    EventHotKeyID hk_com;
+    GetEventParameter(the_event, kEventParamDirectObject, typeEventHotKeyID, NULL,
+                      sizeof(hk_com), NULL, &hk_com);
+    switch (hk_com.id) {
+    case 0:
+      static_cast<MainWindow *>(user_data)->new_screenshot(0);
+      break;
+    case 1:
+      static_cast<MainWindow *>(user_data)->new_screenshot(1);
+      break;
+    case 2:
+      static_cast<MainWindow *>(user_data)->show();
+      static_cast<MainWindow *>(user_data)->raise();
+      break;
+    default:
+      static_cast<MainWindow*>(user_data)->new_screenshot(0);
+      break;
+    }
     return noErr;
   }
 
