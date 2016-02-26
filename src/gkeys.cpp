@@ -7,8 +7,9 @@ namespace GKeys {
 #ifdef __APPLE__
   void set_osx_keys(MainWindow *mwin) {
     /*
-      * Register the hotkey
-      */
+     * Register the hotkey
+     * Documentation: dbachrach.com/blog/2005/11/program-global-hotkeys-in-cocoa-easily/
+     */
     EventHotKeyRef g_hotkey_reference;
     EventHotKeyID g_hotkey_id;
     EventTypeSpec event_type;
