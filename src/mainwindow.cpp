@@ -3,6 +3,9 @@
 #include "ui_mainwindow.h"
 #include "centralize.h"
 #include "gkeys.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -48,6 +51,18 @@ MainWindow::~MainWindow()
 {
   delete ui;
 }
+
+#ifdef _WIN32
+bool MainWindow::nativeEvent(const QByteArray& eventType, void* message, long* result)
+{
+    MSG* pMsg = reinterpret_cast<MSG*>(message);
+    if (pMsg->message == WM_HOTKEY)
+    {
+       this->new_screenshot();
+    }
+    return QWidget::nativeEvent(eventType, message, result);
+}
+#endif
 
 void MainWindow::new_screenshot() {
   if (ui->hideCheckBox->isChecked())
