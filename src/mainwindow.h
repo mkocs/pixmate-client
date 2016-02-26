@@ -29,6 +29,9 @@ class MainWindow : public QMainWindow
  public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
+#ifdef _WIN32
+  bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
+#endif
   public slots:
     void new_screenshot();
   private slots:

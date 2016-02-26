@@ -3,6 +3,9 @@
 #include "ui_mainwindow.h"
 #include "centralize.h"
 #include "gkeys.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -12,7 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef __APPLE__
   GKeys::set_osx_keys(this);
+#elif defined _WIN32
+  GKeys::set_win32_keys(this);
+  //#elif defined __unix__
 #endif
+
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
   // room on the bottom.
@@ -44,6 +51,18 @@ MainWindow::~MainWindow()
 {
   delete ui;
 }
+
+#ifdef _WIN32
+  bool MainWindow::nativeEvent(const QByteArray& eventType, void* message, long* result)
+  {
+      MSG* pMsg = reinterpret_cast<MSG*>(message);
+      if (pMsg->message == WM_HOTKEY)
+      {
+        this->new_screenshot();
+      }
+      return QWidget::nativeEvent(eventType, message, result);
+  }
+#endif
 
 void MainWindow::new_screenshot() {
   if (ui->hideCheckBox->isChecked())
