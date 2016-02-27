@@ -3,9 +3,6 @@
 #include "ui_mainwindow.h"
 #include "centralize.h"
 #include "gkeys.h"
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -13,12 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-#ifdef __APPLE__
-  GKeys::set_osx_keys(this);
-#elif defined _WIN32
-  GKeys::set_win32_keys(this);
-  //#elif defined __unix__
-#endif
+  GKeys::set_hotkeys(this);
 
   // On OSX devices there is no menubar on the top
   // of the window, which is why there is a lot of
@@ -52,25 +44,13 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-#ifdef _WIN32
-  bool MainWindow::nativeEvent(const QByteArray& eventType, void* message, long* result)
-  {
-      MSG* pMsg = reinterpret_cast<MSG*>(message);
-      if (pMsg->message == WM_HOTKEY)
-      {
-        this->new_screenshot();
-      }
-      return QWidget::nativeEvent(eventType, message, result);
-  }
-#endif
-
 void MainWindow::new_screenshot(int sel) {
   if (ui->hideCheckBox->isChecked())
     hide();
 
   if (sel > -1)
     selected_mode_ = sel;
-  
+
   switch (selected_mode_) {
     case 0:
     {
@@ -115,6 +95,16 @@ void MainWindow::take_region_screenshot() {
     show();
   }
   delete selection_dialog_;
+}
+
+void MainWindow::hk_reg_screenshot()
+{
+  this->new_screenshot(0);
+}
+
+void MainWindow::hk_area_screenshot()
+{
+  this->new_screenshot(1);
 }
 
 void MainWindow::update_checkbox() {

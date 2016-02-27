@@ -43,10 +43,4 @@ DISTFILES += \
 RESOURCES += \
     resources.qrc
 
-unix:!macx {}
-
-macx {
-    LIBS += -framework Carbon
-}
-
-win32 {}
+include(./lib/QHotkey/qhotkey.pri)
