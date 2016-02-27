@@ -1,3 +1,3 @@
 # pixmate Client
 
-PC/Mac client for pixmate
+pixmate for Linux, OSX and Windows
