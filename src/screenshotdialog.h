@@ -7,7 +7,8 @@
 #include <QCloseEvent>
 #include <QPixmap>
 
-namespace Ui {
+namespace Ui
+{
   class ScreenshotDialog;
 }
 

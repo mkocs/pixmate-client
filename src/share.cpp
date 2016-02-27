@@ -14,19 +14,22 @@
 #include <QClipboard>
 #include <QSsl>
 
-Share::Share(QDialog *sender, Screenshot *screenshot) {
+Share::Share(QDialog *sender, Screenshot *screenshot)
+{
   sender_ = sender;
   screenshot_ = screenshot;
 }
 
 Share::~Share() {}
 
-void Share::share_screenshot(QPixmap *pixmap, int ttlTime, int ttlViews) {
+void Share::share_screenshot(QPixmap *pixmap, int ttlTime, int ttlViews)
+{
   QByteArray byte_array = convert_pxm_to_bytearray(pixmap);
   upload(byte_array, ttlTime, ttlViews);
 }
 
-QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
+QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap)
+{
   QByteArray byte_array;
   QBuffer buffer(&byte_array);
   buffer.open(QIODevice::WriteOnly);
@@ -34,7 +37,8 @@ QByteArray Share::convert_pxm_to_bytearray(QPixmap *pixmap) {
   return byte_array;
 }
 
-void Share::upload(const QByteArray &data, int ttl_time, int ttl_views) {
+void Share::upload(const QByteArray &data, int ttl_time, int ttl_views)
+{
   QHttpMultiPart *multi_part = new QHttpMultiPart(QHttpMultiPart::FormDataType);
   QHttpPart image_part;
   image_part.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
@@ -61,26 +65,27 @@ void Share::upload(const QByteArray &data, int ttl_time, int ttl_views) {
 }
 
 // Documentation for QNetworkReply error codes: http://doc.qt.io/qt-5/qnetworkreply.html#NetworkError-enum
-void Share::reply_finished(QNetworkReply *reply) {
+void Share::reply_finished(QNetworkReply *reply)
+{
   MessageDialog *mdiag;
   switch (reply->error()) {
-  case QNetworkReply::NoError:
+    case QNetworkReply::NoError:
     {
       copy_url_to_clipboard(reply);
       mdiag = new MessageDialog(sender_, ("Upload successful.\nThe URL is in your clipboard."));
       break;
     }
-  case QNetworkReply::ConnectionRefusedError:
+    case QNetworkReply::ConnectionRefusedError:
     {
       mdiag = new MessageDialog(sender_, "The remote server refused the connection.");
       break;
     }
-  case QNetworkReply::TimeoutError:
+    case QNetworkReply::TimeoutError:
     {
       mdiag = new MessageDialog(sender_, "The connection timed out.");
       break;
     }
-  default:
+    default:
     {
       mdiag = new MessageDialog(sender_, "I'm sorry. An error occured and I could not finish the upload.");
       break;
@@ -92,7 +97,8 @@ void Share::reply_finished(QNetworkReply *reply) {
 // Server returns the ID for the uploaded image
 // This ID is copied to the clipboard, so it can
 // easily be shared.
-void Share::copy_url_to_clipboard(QNetworkReply *reply) {
+void Share::copy_url_to_clipboard(QNetworkReply *reply)
+{
   QClipboard *clipboard = QApplication::clipboard();
   clipboard->setText("https://localhost:8001/" + reply->readAll());
 }

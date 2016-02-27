@@ -70,7 +70,7 @@ private:
 	void draw_selection_rectangle(QPainter &painter);
 	void draw_selection_resolution_text(QPainter &painter);
 	void draw_selection_zoombox(QPainter &painter);
-	
+
 	QPixmap desktop_background_pixmap_;
 	QPixmap desktop_color_pixmap_;
 	bool backgroundexists_;

@@ -10,11 +10,12 @@
 #define TTL_TIME_DEFAULT 80640 
 #define TTL_VIEWS_DEFAULT -1
 
-class Share : public QObject{
+class Share : public QObject
+{
   Q_OBJECT
 
  public:
-  Share(QDialog* sender, Screenshot* screen_shot);
+  Share(QDialog* sender, Screenshot* screenshot);
   ~Share();
   void share_screenshot(QPixmap *pixmap, int ttlTime, int ttlViews);
 

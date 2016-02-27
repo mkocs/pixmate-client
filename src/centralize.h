@@ -1,5 +1,6 @@
 #include <QWidget>
 
-namespace Centralize {
+namespace Centralize
+{
   void center_window(QWidget *widget);
 }

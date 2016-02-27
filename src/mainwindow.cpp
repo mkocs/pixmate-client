@@ -44,14 +44,16 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow::new_screenshot(int sel) {
+void MainWindow::new_screenshot(int sel)
+{
   if (ui->hideCheckBox->isChecked())
     hide();
 
   if (sel > -1)
     selected_mode_ = sel;
 
-  switch (selected_mode_) {
+  switch (selected_mode_)
+  {
     case 0:
     {
       QTimer::singleShot(ui->delaySpinBox->value() * 1000, this, SLOT(take_regular_screenshot()));
@@ -70,28 +72,37 @@ void MainWindow::new_screenshot(int sel) {
   }
 }
 
-void MainWindow::take_regular_screenshot() {
+void MainWindow::take_regular_screenshot()
+{
   screenshot_ = new Screenshot();
   screenshot_->take_screenshot();
-  if (!screenshot_->get_pixmap()->isNull()) {
+  if (!screenshot_->get_pixmap()->isNull())
+  {
     screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
     screenshot_dialog_->show();
   }
 }
 
-void MainWindow::take_region_screenshot() {
+void MainWindow::take_region_screenshot()
+{
   screenshot_ = new Screenshot();
   selection_dialog_ = new RegionSelectionDialog();
   res_ = selection_dialog_->exec();
-  if (res_ == QDialog::Accepted) {
-    if (!selection_dialog_->get_selection_pixmap().isNull()) {
+  if (res_ == QDialog::Accepted)
+  {
+    if (!selection_dialog_->get_selection_pixmap().isNull())
+    {
       screenshot_->set_pixmap(selection_dialog_->get_selection_pixmap());
       screenshot_dialog_ = new ScreenshotDialog(this, screenshot_);
       screenshot_dialog_->show();
-    } else {
+    }
+    else
+    {
       show();
     }
-  } else {
+  }
+  else
+  {
     show();
   }
   delete selection_dialog_;
