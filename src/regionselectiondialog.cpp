@@ -22,21 +22,21 @@
 // it to the variable that will serve as background.
 RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent)
 {
-	// See http://doc.qt.io/qt-5/qt.html for further information.
-	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-	#ifdef __APPLE__
-	setWindowState(Qt::WindowMaximized);
-	#else
-	setWindowState(Qt::WindowFullScreen);
-	#endif
+    // See http://doc.qt.io/qt-5/qt.html for further information.
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    #ifdef __APPLE__
+    setWindowState(Qt::WindowMaximized);
+    #else
+    setWindowState(Qt::WindowFullScreen);
+    #endif
 
-	setCursor(Qt::CrossCursor);
+    setCursor(Qt::CrossCursor);
 
-  QDesktopWidget *widget;
-  widget = new QDesktopWidget();
-  center_dialog(widget);
+    QDesktopWidget *widget;
+    widget = new QDesktopWidget();
+    center_dialog(widget);
 
-	draw_overlay();
+    draw_overlay();
 }
 
 RegionSelectionDialog::~RegionSelectionDialog() {}
@@ -56,18 +56,18 @@ RegionSelectionDialog::~RegionSelectionDialog() {}
 // was first pressed and either paintEvent or mouseMoveEvent gets called.
 bool RegionSelectionDialog::event(QEvent *event)
 {
-	if (event->type() == QEvent::MouseButtonRelease ||
-		  event->type() == QEvent::KeyPress)
-		accept();
-	if (event->type() == QEvent::MouseButtonPress)
-  {
-		QMouseEvent *mouseevent = static_cast<QMouseEvent*>(event);
-		if(mouseevent->button() != Qt::LeftButton)
-			reject();
-		selection_startpoint_ = mouseevent->pos();
-		selection_rectangle_ = QRect(selection_startpoint_, QSize());
-	}
-	return QDialog::event(event);
+    if (event->type() == QEvent::MouseButtonRelease ||
+        event->type() == QEvent::KeyPress)
+        accept();
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *mouseevent = static_cast<QMouseEvent*>(event);
+        if(mouseevent->button() != Qt::LeftButton)
+        reject();
+        selection_startpoint_ = mouseevent->pos();
+        selection_rectangle_ = QRect(selection_startpoint_, QSize());
+    }
+    return QDialog::event(event);
 }
 
 // Called if there has been a request to repaint all or part of the dialog.
@@ -76,10 +76,10 @@ bool RegionSelectionDialog::event(QEvent *event)
 // and draws the selection rectangle afterwards.
 void RegionSelectionDialog::paintEvent(QPaintEvent *)
 {
-	QPainter painter(this);
-	if(!backgroundexists_)
-		painter.drawPixmap(QPoint(0,0), desktop_background_pixmap_);
-	draw_selection_rectangle(painter);
+    QPainter painter(this);
+    if(!backgroundexists_)
+        painter.drawPixmap(QPoint(0,0), desktop_background_pixmap_);
+    draw_selection_rectangle(painter);
 }
 
 // Called if there has been a mouse related event.
@@ -90,10 +90,10 @@ void RegionSelectionDialog::paintEvent(QPaintEvent *)
 // and height.
 void RegionSelectionDialog::mouseMoveEvent(QMouseEvent *event)
 {
-	QMouseEvent *mouseevent = static_cast<QMouseEvent*>(event);
-	selection_rectangle_ = QRect(selection_startpoint_, mouseevent->pos()).normalized();
-	selection_endpoint_ = mouseevent->pos();
-	update(); // invokes paintEvent(QPaintEvent *)
+    QMouseEvent *mouseevent = static_cast<QMouseEvent*>(event);
+    selection_rectangle_ = QRect(selection_startpoint_, mouseevent->pos()).normalized();
+    selection_endpoint_ = mouseevent->pos();
+    update(); // invokes paintEvent(QPaintEvent *)
 }
 /*
  * </EVENTS>
@@ -102,39 +102,39 @@ void RegionSelectionDialog::mouseMoveEvent(QMouseEvent *event)
 
 void RegionSelectionDialog::center_dialog(QDesktopWidget *widget)
 {
-  if (widget->screenCount() > 1)
-  {
-    int start_x = 0, start_y = 0;
-    int end_x = 0, end_y = 0;
-    int cursor_x = QCursor::pos().x();
-    int cursor_y = QCursor::pos().y();
-    for(int i = 0; i < widget->screenCount(); i++)
+    if (widget->screenCount() > 1)
     {
-      if (i > 0)
-      {
-        start_x += end_x;
-        end_x += widget->screenGeometry(i).width();
-        end_y += widget->screenGeometry(i).height();
-      }
-      else
-      {
-        start_x = 0;
-        end_x = widget->screenGeometry(i).width();
-        end_y = widget->screenGeometry(i).height();
-      }
-      if (cursor_x >= start_x && cursor_x <= end_x &&
-          cursor_y >= start_y && cursor_y <= end_y)
-      {
-        move(start_x, 0);
-        grab_background(true, start_x, start_y, end_x, end_y);
-      }
+        int start_x = 0, start_y = 0;
+        int end_x = 0, end_y = 0;
+        int cursor_x = QCursor::pos().x();
+        int cursor_y = QCursor::pos().y();
+        for(int i = 0; i < widget->screenCount(); i++)
+        {
+        if (i > 0)
+        {
+            start_x += end_x;
+            end_x += widget->screenGeometry(i).width();
+            end_y += widget->screenGeometry(i).height();
+        }
+        else
+        {
+            start_x = 0;
+            end_x = widget->screenGeometry(i).width();
+            end_y = widget->screenGeometry(i).height();
+        }
+        if (cursor_x >= start_x && cursor_x <= end_x &&
+            cursor_y >= start_y && cursor_y <= end_y)
+        {
+            move(start_x, 0);
+            grab_background(true, start_x, start_y, end_x, end_y);
+        }
+        }
     }
-  }
-  else
-  {
-    move(0,0);
-    grab_background(false);
-  }
+    else
+    {
+        move(0,0);
+        grab_background(false);
+    }
 }
 
 void RegionSelectionDialog
@@ -144,32 +144,32 @@ void RegionSelectionDialog
                   int end_x,
                   int end_y)
 {
-  QScreen *screen = QGuiApplication::primaryScreen();
-  if (screen)
-  {
-    if (multiple_screens)
+    QScreen *screen = QGuiApplication::primaryScreen();
+    if (screen)
     {
-      // The value of winId() is the OS-specific window type, depending on your platform:
-      // MSWindows: HWND
-      // Mac: HIView
-      // X: Window
-      desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId(), start_x, start_y, (end_x-start_x), (end_y-start_y));
-      desktop_color_pixmap_ = desktop_background_pixmap_;
+        if (multiple_screens)
+        {
+        // The value of winId() is the OS-specific window type, depending on your platform:
+        // MSWindows: HWND
+        // Mac: HIView
+        // X: Window
+        desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId(), start_x, start_y, (end_x-start_x), (end_y-start_y));
+        desktop_color_pixmap_ = desktop_background_pixmap_;
+        }
+        else
+        {
+        desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
+        desktop_color_pixmap_ = desktop_background_pixmap_;
+        }
     }
-    else
-    {
-      desktop_background_pixmap_ = screen->grabWindow(QApplication::desktop()->winId());
-      desktop_color_pixmap_ = desktop_background_pixmap_;
-    }
-  }
 }
 
 void RegionSelectionDialog::draw_overlay()
 {
-	QPainter painter(&desktop_background_pixmap_);
-	draw_background(painter);
-	draw_tooltip_text_rectangle(painter);
-	set_widget_palette();
+    QPainter painter(&desktop_background_pixmap_);
+    draw_background(painter);
+    draw_tooltip_text_rectangle(painter);
+    set_widget_palette();
 }
 
 // Sets the painter_'s brush to 85% opacity to give a
@@ -179,19 +179,19 @@ void RegionSelectionDialog::draw_overlay()
 // pixmap as its background.
 void RegionSelectionDialog::draw_background(QPainter &painter)
 {
-	painter.setBrush(QBrush(QColor(0, 0, 0, 85), Qt::SolidPattern));
-	painter.drawRect(QApplication::desktop()->rect());
+    painter.setBrush(QBrush(QColor(0, 0, 0, 85), Qt::SolidPattern));
+    painter.drawRect(QApplication::desktop()->rect());
 }
 
 void RegionSelectionDialog
 ::draw_tooltip_text_rectangle(QPainter &painter)
 {
-	QRect textrectangle = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
-	float textboxheight = textrectangle.height();
-  QString text_tooltip = QApplication::tr("Use your mouse to select a region or\nexit by pressing ESC");
-	textrectangle.setHeight(qRound(textboxheight/10));
-	draw_tooltip_text_background(textrectangle, text_tooltip, painter);
-	draw_tooltip_text(textrectangle, text_tooltip, painter);
+    QRect textrectangle = QApplication::desktop()->screenGeometry(QApplication::desktop()->primaryScreen());
+    float textboxheight = textrectangle.height();
+    QString text_tooltip = QApplication::tr("Use your mouse to select a region or\nexit by pressing ESC");
+    textrectangle.setHeight(qRound(textboxheight/10));
+    draw_tooltip_text_background(textrectangle, text_tooltip, painter);
+    draw_tooltip_text(textrectangle, text_tooltip, painter);
 }
 
 void RegionSelectionDialog
@@ -199,14 +199,14 @@ void RegionSelectionDialog
                                QString texttooltip,
                                QPainter &painter)
 {
-  QRect textbackgroundrectangle = painter.boundingRect(textrectangle, Qt::AlignCenter, texttooltip);
-	textbackgroundrectangle.setX(textbackgroundrectangle.x() - 6);
-	textbackgroundrectangle.setY(textbackgroundrectangle.y() - 4);
-	textbackgroundrectangle.setWidth(textbackgroundrectangle.width() + 12);
-	textbackgroundrectangle.setHeight(textbackgroundrectangle.height() + 8);
-	painter.setPen(QPen(Qt::gray));
-	painter.setBrush(QBrush(QColor(255, 255, 255, 180), Qt::SolidPattern));
-	painter.drawRect(textbackgroundrectangle);
+    QRect textbackgroundrectangle = painter.boundingRect(textrectangle, Qt::AlignCenter, texttooltip);
+    textbackgroundrectangle.setX(textbackgroundrectangle.x() - 6);
+    textbackgroundrectangle.setY(textbackgroundrectangle.y() - 4);
+    textbackgroundrectangle.setWidth(textbackgroundrectangle.width() + 12);
+    textbackgroundrectangle.setHeight(textbackgroundrectangle.height() + 8);
+    painter.setPen(QPen(Qt::gray));
+    painter.setBrush(QBrush(QColor(255, 255, 255, 180), Qt::SolidPattern));
+    painter.drawRect(textbackgroundrectangle);
 }
 
 void RegionSelectionDialog
@@ -214,8 +214,8 @@ void RegionSelectionDialog
                     QString texttooltip,
                     QPainter &painter)
 {
-	painter.setPen(QPen(Qt::black));
-	painter.drawText(textbackgroundrectangle, Qt::AlignCenter, texttooltip);
+    painter.setPen(QPen(Qt::black));
+    painter.drawText(textbackgroundrectangle, Qt::AlignCenter, texttooltip);
 }
 
 // Takes the dialog's current palette as a base and sets the
@@ -223,13 +223,13 @@ void RegionSelectionDialog
 // constructor.
 void RegionSelectionDialog::set_widget_palette()
 {
-	backgroundexists_ = (qApp->desktop()->screenCount() > 1);
-	if (backgroundexists_)
-  {
-		QPalette newwidgetpalette = palette();
-		newwidgetpalette.setBrush(QPalette::Window /*value: 10*/, QBrush(desktop_background_pixmap_));
-		setPalette(newwidgetpalette);
-	}
+    backgroundexists_ = (qApp->desktop()->screenCount() > 1);
+    if (backgroundexists_)
+    {
+        QPalette newwidgetpalette = palette();
+        newwidgetpalette.setBrush(QPalette::Window /*value: 10*/, QBrush(desktop_background_pixmap_));
+        setPalette(newwidgetpalette);
+    }
 }
 
 // Called in case of a paintEvent. Draws/redraws the selection rectangle
@@ -238,11 +238,11 @@ void RegionSelectionDialog::set_widget_palette()
 void RegionSelectionDialog
 ::draw_selection_rectangle(QPainter &painter)
 {
-	painter.drawPixmap(selection_rectangle_, desktop_color_pixmap_, selection_rectangle_);
-	draw_selection_resolution_text(painter);
-	painter.setPen(QPen(QBrush(QColor(0, 0, 0, 0/*alpha channel*/)), 2));
-	painter.drawRect(selection_rectangle_);
-	draw_selection_zoombox(painter);
+    painter.drawPixmap(selection_rectangle_, desktop_color_pixmap_, selection_rectangle_);
+    draw_selection_resolution_text(painter);
+    painter.setPen(QPen(QBrush(QColor(0, 0, 0, 0/*alpha channel*/)), 2));
+    painter.drawRect(selection_rectangle_);
+    draw_selection_zoombox(painter);
 }
 
 // Called from draw_selection_rectangle()
@@ -251,8 +251,8 @@ void RegionSelectionDialog
 void RegionSelectionDialog
 ::draw_selection_resolution_text(QPainter &painter)
 {
-	QString text_size = QApplication::tr("%1 x %2 px ").arg(selection_rectangle_.width()).arg(selection_rectangle_.height());
-	painter.drawText(selection_rectangle_, Qt::AlignBottom | Qt::AlignRight, text_size);
+    QString text_size = QApplication::tr("%1 x %2 px ").arg(selection_rectangle_.width()).arg(selection_rectangle_.height());
+    painter.drawText(selection_rectangle_, Qt::AlignBottom | Qt::AlignRight, text_size);
 }
 
 // Called from draw_selection_rectangle()
@@ -262,36 +262,36 @@ void RegionSelectionDialog
 void RegionSelectionDialog
 ::draw_selection_zoombox(QPainter &painter)
 {
-	if (!selection_endpoint_.isNull())
-  {
-		const quint8 zoom_side = 200;
-		QPoint zoom_startpoint = selection_endpoint_;
-		zoom_startpoint -= QPoint(zoom_side/5, zoom_side/5);
-		QPoint zoom_endpoint = selection_endpoint_;
-		zoom_endpoint += QPoint(zoom_side/5, zoom_side/5);
-		QRect zoom_rectangle = QRect(zoom_startpoint, zoom_endpoint);
-		QPixmap zoom_pixmap = desktop_color_pixmap_.copy(zoom_rectangle).scaled(QSize(zoom_side, zoom_side), Qt::KeepAspectRatio);
-		QPainter zoom_painter(&zoom_pixmap);
-		zoom_painter.setPen(QPen(QBrush(QColor(50, 50, 50, 180)), 2));
-		zoom_painter.drawRect(zoom_pixmap.rect());
-		zoom_painter.drawText(zoom_pixmap.rect().center() - QPoint(4, -4), "+");
-		QPoint zoom_center = selection_rectangle_.bottomRight();
-		if(zoom_center.x() + zoom_side > desktop_color_pixmap_.rect().width() ||
-		   zoom_center.y() + zoom_side > desktop_color_pixmap_.rect().height())
-      zoom_center -= QPoint(zoom_side, zoom_side);
-		painter.drawPixmap(zoom_center, zoom_pixmap);
-	}
+    if (!selection_endpoint_.isNull())
+    {
+        const quint8 zoom_side = 200;
+        QPoint zoom_startpoint = selection_endpoint_;
+        zoom_startpoint -= QPoint(zoom_side/5, zoom_side/5);
+        QPoint zoom_endpoint = selection_endpoint_;
+        zoom_endpoint += QPoint(zoom_side/5, zoom_side/5);
+        QRect zoom_rectangle = QRect(zoom_startpoint, zoom_endpoint);
+        QPixmap zoom_pixmap = desktop_color_pixmap_.copy(zoom_rectangle).scaled(QSize(zoom_side, zoom_side), Qt::KeepAspectRatio);
+        QPainter zoom_painter(&zoom_pixmap);
+        zoom_painter.setPen(QPen(QBrush(QColor(50, 50, 50, 180)), 2));
+        zoom_painter.drawRect(zoom_pixmap.rect());
+        zoom_painter.drawText(zoom_pixmap.rect().center() - QPoint(4, -4), "+");
+        QPoint zoom_center = selection_rectangle_.bottomRight();
+        if(zoom_center.x() + zoom_side > desktop_color_pixmap_.rect().width() ||
+        zoom_center.y() + zoom_side > desktop_color_pixmap_.rect().height())
+        zoom_center -= QPoint(zoom_side, zoom_side);
+        painter.drawPixmap(zoom_center, zoom_pixmap);
+    }
 }
 
 // Called from mainwindow after creating a RegionSelectionDialog object.
 QPixmap RegionSelectionDialog::get_selection_pixmap()
 {
-	QPixmap selection;
-  // copy(const QRect &rectangle = QRect()) returns a
-  // deep copy of the subset of the pixmap that is specified
-  // by the given rectangle.
-  // If the given rectangle is empty, the whole image
-  // is copied.
-	selection = desktop_color_pixmap_.copy(selection_rectangle_);
-	return selection;
+    QPixmap selection;
+    // copy(const QRect &rectangle = QRect()) returns a
+    // deep copy of the subset of the pixmap that is specified
+    // by the given rectangle.
+    // If the given rectangle is empty, the whole image
+    // is copied.
+    selection = desktop_color_pixmap_.copy(selection_rectangle_);
+    return selection;
 }
