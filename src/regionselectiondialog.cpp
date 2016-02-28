@@ -24,18 +24,15 @@ RegionSelectionDialog::RegionSelectionDialog(QWidget *parent) : QDialog(parent)
 {
     // See http://doc.qt.io/qt-5/qt.html for further information.
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    #ifdef __APPLE__
+#ifdef __APPLE__
     setWindowState(Qt::WindowMaximized);
-    #else
+#else
     setWindowState(Qt::WindowFullScreen);
-    #endif
-
+#endif
     setCursor(Qt::CrossCursor);
-
     QDesktopWidget *widget;
     widget = new QDesktopWidget();
     center_dialog(widget);
-
     draw_overlay();
 }
 
