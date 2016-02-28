@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
     RegionSelectionDialog *selection_dialog_;
     ScreenshotDialog *screenshot_dialog_;
     Screenshot *screenshot_;
+    Share *share_;
     int res_;
 };
 

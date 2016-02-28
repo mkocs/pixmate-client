@@ -110,12 +110,29 @@ void MainWindow::take_region_screenshot()
 
 void MainWindow::hk_reg_screenshot()
 {
-  this->new_screenshot(0);
+  screenshot_ = new Screenshot();
+  screenshot_->take_screenshot();
+  if (!screenshot_->get_pixmap()->isNull())
+  {
+      share_ = new Share(this, screenshot_, false);
+      share_->share_screenshot();
+  }
 }
 
 void MainWindow::hk_area_screenshot()
 {
-  this->new_screenshot(1);
+  screenshot_ = new Screenshot();
+  selection_dialog_ = new RegionSelectionDialog();
+  res_ = selection_dialog_->exec();
+  if (res_ == QDialog::Accepted)
+  {
+      if (!selection_dialog_->get_selection_pixmap().isNull())
+      {
+          screenshot_->set_pixmap(selection_dialog_->get_selection_pixmap());
+          share_ = new Share(this, screenshot_, false);
+          share_->share_screenshot();
+      }
+  }
 }
 
 void MainWindow::update_checkbox() {

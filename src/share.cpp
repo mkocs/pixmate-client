@@ -14,17 +14,18 @@
 #include <QClipboard>
 #include <QSsl>
 
-Share::Share(QDialog *sender, Screenshot *screenshot)
+Share::Share(QWidget *sender, Screenshot *screenshot, bool show_f_dialog)
 {
   sender_ = sender;
   screenshot_ = screenshot;
+  show_f_dialog_ = show_f_dialog;
 }
 
 Share::~Share() {}
 
-void Share::share_screenshot(QPixmap *pixmap, int ttlTime, int ttlViews)
+void Share::share_screenshot(int ttlTime, int ttlViews) 
 {
-  QByteArray byte_array = convert_pxm_to_bytearray(pixmap);
+  QByteArray byte_array = convert_pxm_to_bytearray(screenshot_->get_pixmap());
   upload(byte_array, ttlTime, ttlViews);
 }
 
@@ -55,7 +56,7 @@ void Share::upload(const QByteArray &data, int ttl_time, int ttl_views)
   text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"ttlviews\""));
   text_part.setBody(QString::number(ttl_views).toLatin1());
   multi_part->append(text_part);
-  QNetworkRequest request(QUrl("https://localhost:8001/api/upload"));
+  QNetworkRequest request(QUrl("https://192.168.1.5:8001/api/upload"));
   QSslConfiguration conf = request.sslConfiguration();
   conf.setPeerVerifyMode(QSslSocket::VerifyNone); // Verify none while using unsigned certificate on server side
   request.setSslConfiguration(conf);
@@ -67,31 +68,39 @@ void Share::upload(const QByteArray &data, int ttl_time, int ttl_views)
 // Documentation for QNetworkReply error codes: http://doc.qt.io/qt-5/qnetworkreply.html#NetworkError-enum
 void Share::reply_finished(QNetworkReply *reply)
 {
-  MessageDialog *mdiag;
-  switch (reply->error()) {
-    case QNetworkReply::NoError:
+    if (show_f_dialog_)
     {
-      copy_url_to_clipboard(reply);
-      mdiag = new MessageDialog(sender_, ("Upload successful.\nThe URL is in your clipboard."));
-      break;
+        MessageDialog *mdiag;
+        switch (reply->error()) {
+            case QNetworkReply::NoError:
+            {
+                mdiag = new MessageDialog(sender_, ("Upload successful.\nThe URL is in your clipboard."));
+                break;
+            }
+            case QNetworkReply::ConnectionRefusedError:
+            {
+                mdiag = new MessageDialog(sender_, "The remote server refused the connection.");
+                break;
+            }
+            case QNetworkReply::TimeoutError:
+            {
+                mdiag = new MessageDialog(sender_, "The connection timed out.");
+                break;
+            }
+            default:
+            {
+                mdiag = new MessageDialog(sender_, "I'm sorry. An error occured and I could not finish the upload.");
+                break;
+            }
+        }
+        mdiag->exec();
     }
-    case QNetworkReply::ConnectionRefusedError:
+
+    if (reply->error() == QNetworkReply::NoError)
     {
-      mdiag = new MessageDialog(sender_, "The remote server refused the connection.");
-      break;
+        qApp->beep();
+        copy_url_to_clipboard(reply);
     }
-    case QNetworkReply::TimeoutError:
-    {
-      mdiag = new MessageDialog(sender_, "The connection timed out.");
-      break;
-    }
-    default:
-    {
-      mdiag = new MessageDialog(sender_, "I'm sorry. An error occured and I could not finish the upload.");
-      break;
-    }
-  }
-  mdiag->exec();
 }
 
 // Server returns the ID for the uploaded image
@@ -100,6 +109,6 @@ void Share::reply_finished(QNetworkReply *reply)
 void Share::copy_url_to_clipboard(QNetworkReply *reply)
 {
   QClipboard *clipboard = QApplication::clipboard();
-  clipboard->setText("https://localhost:8001/" + reply->readAll());
+  clipboard->setText("https://192.168.1.5:8001/" + reply->readAll());
 }
 

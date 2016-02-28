@@ -86,5 +86,5 @@ void ScreenshotDialog::share_screenshot()
   {
     screenshot_->set_pixmap_title(ui->customTitleLineEdit->text());
   }
-  share_->share_screenshot(screenshot_->get_pixmap(), ttl_time, ttl_views);
+  share_->share_screenshot(ttl_time, ttl_views);
 }
