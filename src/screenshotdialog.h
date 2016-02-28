@@ -9,30 +9,29 @@
 
 namespace Ui
 {
-  class ScreenshotDialog;
+    class ScreenshotDialog;
 }
 
 class ScreenshotDialog : public QDialog
 {
   Q_OBJECT
 
- public:
-  explicit ScreenshotDialog(QWidget *parent = 0, Screenshot* screenshot = 0);
-  ~ScreenshotDialog();
-  void closeEvent(QCloseEvent *event);
- private slots:
-  void save_screenshot();
-  void share_screenshot();
+public:
+    explicit ScreenshotDialog(QWidget *parent = 0, Screenshot* screenshot = 0);
+    ~ScreenshotDialog();
+    void closeEvent(QCloseEvent *event);
+private slots:
+    void save_screenshot();
+    void share_screenshot();
+signals:
+    void dialogClosed();
 
- signals:
-  void dialogClosed();
-
- private:
-  void set_label_pixmap();
-  Ui::ScreenshotDialog *ui;
-  QWidget *parent_;
-  Screenshot *screenshot_;
-  Share *share_;
+private:
+    void set_label_pixmap();
+    Ui::ScreenshotDialog *ui;
+    QWidget *parent_;
+    Screenshot *screenshot_;
+    Share *share_;
 };
 
 #endif // SCREENSHOTDIALOG_H

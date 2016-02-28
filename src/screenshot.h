@@ -7,19 +7,19 @@
 
 class Screenshot
 {
- public:
-  Screenshot();
+public:
+    Screenshot();
 
-  // Returns the screenshot pixmap
-  QPixmap *get_pixmap();
-  QString get_pixmap_title();
-  void set_pixmap(QPixmap pixmap);
-  void take_screenshot();
-  void set_pixmap_title(QString title);
+    // Returns the screenshot pixmap
+    QPixmap *get_pixmap();
+    QString get_pixmap_title();
+    void set_pixmap(QPixmap pixmap);
+    void take_screenshot();
+    void set_pixmap_title(QString title);
 
- private:
-  QPixmap original_pixmap_;
-  QString pixmap_title_;
+private:
+    QPixmap original_pixmap_;
+    QString pixmap_title_;
 };
 
 #endif // SCREENSHOT_H

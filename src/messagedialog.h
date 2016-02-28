@@ -4,7 +4,7 @@
 #include <QDialog>
 
 namespace Ui {
-  class MessageDialog;
+    class MessageDialog;
 }
 
 class MessageDialog : public QDialog
@@ -12,11 +12,10 @@ class MessageDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit MessageDialog(QWidget *parent = 0, QString text = "");
-  ~MessageDialog();
-
+    explicit MessageDialog(QWidget *parent = 0, QString text = "");
+    ~MessageDialog();
 private:
-  Ui::MessageDialog *ui;
+    Ui::MessageDialog *ui;
 };
 
 #endif // MESSAGEDIALOG_H

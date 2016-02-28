@@ -2,5 +2,5 @@
 
 namespace GKeys
 {
-  void set_hotkeys(MainWindow *mwin);
+    void set_hotkeys(MainWindow *mwin);
 }

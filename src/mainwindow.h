@@ -26,30 +26,24 @@ class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
- public:
-  explicit MainWindow(QWidget *parent = 0);
-  ~MainWindow();
-  void hk_reg_screenshot();
-  void hk_area_screenshot();
- public slots:
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+    void hk_reg_screenshot();
+    void hk_area_screenshot();
+public slots:
     void new_screenshot(int sel = -1);
- private slots:
+private slots:
     void take_regular_screenshot();
     void take_region_screenshot();
-
     void update_checkbox();
     void on_quitButton_clicked();
     void on_screenshotButton_clicked();
-
     void on_screenRadioButton_clicked();
-
     void on_selectionRadioButton_clicked();
-
     void on_windowRadioButton_clicked();
-
     void on_delaySpinBox_valueChanged(int arg1);
-
-  private:
+private:
     Ui::MainWindow *ui;
     QPixmap original_pixmap_;
     int selected_mode_;

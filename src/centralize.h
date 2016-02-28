@@ -2,5 +2,5 @@
 
 namespace Centralize
 {
-  void center_window(QWidget *widget);
+    void center_window(QWidget *widget);
 }
