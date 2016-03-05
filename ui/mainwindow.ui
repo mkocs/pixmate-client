@@ -25,6 +25,16 @@
   <property name="windowTitle">
    <string>pixmate</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../img/pixmate.png</normaloff>../img/pixmate.png</iconset>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="screenshotButton">
     <property name="geometry">
@@ -188,7 +198,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="styleSheet">

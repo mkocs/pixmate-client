@@ -43,4 +43,18 @@ DISTFILES += \
 RESOURCES += \
     resources.qrc
 
+macx {
+    ICON = img/pixmate.icns
+}
+
+win32 {
+    ICON = img/pixmate.ico
+}
+
+unix:!macx {
+    PREFIX = /usr
+    target.path = $$PREFIX/bin
+    INSTALLS = target
+}
+
 include(./lib/QHotkey/qhotkey.pri)

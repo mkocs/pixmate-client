@@ -9,5 +9,8 @@
         <file>img/ic_done_black_24dp.ico</file>
         <file>img/ic_error_outline_black_24dp.ico</file>
         <file>img/ic_done_all_black_48dp.png</file>
+        <file>img/pixmate.png</file>
+        <file>img/pixmate.icns</file>
+        <file>img/pixmate.ico</file>
     </qresource>
 </RCC>
