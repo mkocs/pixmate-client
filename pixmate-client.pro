@@ -43,6 +43,8 @@ DISTFILES += \
 RESOURCES += \
     resources.qrc
 
+DESTDIR = $$BUILD_ROOT/bin
+
 macx {
     ICON = img/pixmate.icns
 }
@@ -52,9 +54,15 @@ win32 {
 }
 
 unix:!macx {
-    PREFIX = /usr
+    TARGET = pixmate
+    isEmpty(PREFIX): PREFIX = /usr
+    target.files = pixmate
     target.path = $$PREFIX/bin
     INSTALLS = target
+
+    desktop.files = pixmate.desktop
+    desktop.path = $$PREFIX/share/applications
+    INSTALLS += desktop
 }
 
 include(./lib/QHotkey/qhotkey.pri)
