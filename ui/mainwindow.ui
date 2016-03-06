@@ -26,8 +26,8 @@
    <string>pixmate</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../img/pixmate.png</normaloff>../img/pixmate.png</iconset>
+   <iconset resource="../resources.qrc">
+    <normaloff>:/img/128/pixmate.png</normaloff>:/img/128/pixmate.png</iconset>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -198,7 +198,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="styleSheet">

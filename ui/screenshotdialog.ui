@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Screenshot</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/img/128/pixmate.png</normaloff>:/img/128/pixmate.png</iconset>
+  </property>
   <widget class="QLabel" name="screenshotLabel">
    <property name="geometry">
     <rect>

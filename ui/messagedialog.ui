@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>A message for you</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/img/128/pixmate.png</normaloff>:/img/128/pixmate.png</iconset>
+  </property>
   <widget class="QLabel" name="messageLabel">
    <property name="geometry">
     <rect>
