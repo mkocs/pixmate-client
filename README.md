@@ -3,4 +3,4 @@
 pixmate for Linux, OSX and Windows
 
 
-Find the server [here](github.com/mkocs/imgturtle)
+Find the server [here](https://github.com/mkocs/imgturtle)
