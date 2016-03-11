@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <QMenu>
-#include <QSystemTrayIcon>
 
 int main(int argc, char *argv[])
 {
