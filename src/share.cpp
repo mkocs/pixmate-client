@@ -56,7 +56,7 @@ void Share::upload(const QByteArray &data, int ttl_time, int ttl_views)
     text_part.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"ttlviews\""));
     text_part.setBody(QString::number(ttl_views).toLatin1());
     multi_part->append(text_part);
-    QNetworkRequest request(QUrl("http://pixmate.io/api/upload"));
+    QNetworkRequest request(QUrl("https://pixmate.io/api/upload"));
     QSslConfiguration conf = request.sslConfiguration();
     conf.setPeerVerifyMode(QSslSocket::VerifyNone); // Verify none while using unsigned certificate on server side
     request.setSslConfiguration(conf);
@@ -109,6 +109,6 @@ void Share::reply_finished(QNetworkReply *reply)
 void Share::copy_url_to_clipboard(QNetworkReply *reply)
 {
     QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText("http://pixmate.io/" + reply->readAll());
+    clipboard->setText("https://pixmate.io/" + reply->readAll());
 }
 
